@@ -11,6 +11,7 @@ public class NodeData :ScriptableObject
     public float damagePerHit;
     public float hitsPerSecond;
     public float coinCount;
+    public bool isHacked;
     public int maxChildren;
     public GameObject model;
    

@@ -17,5 +17,7 @@ MonoBehaviour:
   dmg: 0
   damagePerHit: 0
   hitsPerSecond: 0
+  coinCount: 0
+  isHacked: 1
   maxChildren: 1
   model: {fileID: 1182336411079941174, guid: 844ad696b23d9c94882810669ccdfb35, type: 3}
