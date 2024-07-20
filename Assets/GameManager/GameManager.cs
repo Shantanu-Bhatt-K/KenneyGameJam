@@ -230,7 +230,7 @@ public class GameManager : MonoBehaviour
     public void AddEntryNode()
     {
         EntryNode entryNode = new EntryNode();
-        entryNode.Init(UnityEngine.Random.insideUnitSphere * 10);
+        entryNode.Init( UnityEngine.Random.insideUnitSphere.normalized * UnityEngine.Random.Range(8f,15f));
         nodeClasses.Add(entryNode);
         entryNodes.Add(entryNode);
         serverNode?.AddParentNode(entryNode);
