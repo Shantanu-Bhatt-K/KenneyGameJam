@@ -49,6 +49,7 @@ public class ServerNode :NodeClass
         lineRenderer.alignment = LineAlignment.View;
         lineRenderer.SetMaterials(GameObject.FindFirstObjectByType<GameManager>().materials);
         Parent.Add(_parent,lineRenderer);
+        parents.Add(_parent);
     }
 
     public override void Update()

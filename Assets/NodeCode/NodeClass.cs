@@ -30,6 +30,7 @@ public abstract class NodeClass
     public float maxHealth;
     public GameObject model;
     public List<NodeClass> children= new List<NodeClass>();
+    public List<NodeClass> parents= new List<NodeClass>();
     public Dictionary<NodeClass,LineRenderer> Parent= new Dictionary<NodeClass,LineRenderer>();
     public GameManager gameManager;
     public abstract void Init( NodeClass _parent,Vector3 position);
@@ -48,8 +49,10 @@ public abstract class NodeClass
         {
             LineRenderer line = Parent[oldParent];
             Parent.Remove(oldParent);
+            parents.Remove(oldParent);
             line.SetPosition(0,newParent.model.transform.position);
             Parent.Add(newParent, line);
+            parents.Add(newParent);
             
         }
             
@@ -60,7 +63,11 @@ public abstract class NodeClass
         if(!Parent.ContainsKey(_parent))
             throw new System.NotImplementedException();
         else
+        {
             Parent.Remove(_parent);
+            parents.Remove(_parent);    
+        }
+           
     }
     public virtual void AddChildren(NodeClass child)
     {
