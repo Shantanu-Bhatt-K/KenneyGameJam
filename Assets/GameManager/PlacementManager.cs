@@ -64,25 +64,36 @@ public class PlacementManager
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("Turret");
+            parentNode = null;
+            childNode = null;
+            editStage = EditStage.None;
             ChangeType(Nodetype.Turret);
         }
         else if(Input.GetKeyDown(KeyCode.Alpha2))
         {
             Debug.Log("Branch");
+            parentNode = null;
+            childNode = null;
+            editStage = EditStage.None;
             ChangeType(Nodetype.Branch);
         }
         else if(Input.GetKeyDown(KeyCode.Alpha3))
         {
             Debug.Log("Farm");
+            parentNode = null;
+            childNode = null;
+            editStage = EditStage.None;
             ChangeType(Nodetype.Farm);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
+
             Debug.Log("Entry");
             gameManager.AddEntryNode();
         }
 
-
+        if (placementNode == Nodetype.None)
+            return;
         if (Input.GetMouseButtonDown(0) && editStage==EditStage.None)
         {
            
