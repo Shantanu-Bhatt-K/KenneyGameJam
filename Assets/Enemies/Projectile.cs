@@ -20,7 +20,6 @@ public class Projectile : MonoBehaviour
         distanceTraveled += Vector3.Magnitude(transform.position - _lastPosition);
         if (distanceTraveled > _distance)
         {
-            Debug.Log("reached de");
             GameObject.Destroy(this.gameObject);
         }
         _lastPosition = transform.position;
