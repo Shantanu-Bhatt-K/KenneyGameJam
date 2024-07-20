@@ -16,7 +16,7 @@ public class EntryNode : NodeClass
 
     public override void Init(Vector3 position)
     {
-        this.data = Resources.Load<NodeData>("ScriptableObject/Entry");
+        this.data = new NodeData(Resources.Load<NodeData>("ScriptableObject/Entry"));
         this.model = GameObject.Instantiate(data.model,position,Quaternion.identity);
         model.GetComponent<NodeReference>().noderef = this;
     }

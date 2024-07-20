@@ -14,6 +14,22 @@ public class NodeData :ScriptableObject
     public bool isHacked;
     public int maxChildren;
     public GameObject model;
-   
+
+    public NodeData()
+    {
+    }
+
+    public NodeData(NodeData other)
+    {
+        this.health = other.health;
+        this.type = other.type;
+        this.dmg = other.dmg;
+        this.damagePerHit = other.damagePerHit;
+        this.hitsPerSecond = other.hitsPerSecond;
+        this.coinCount = other.coinCount;
+        this.isHacked = other.isHacked;
+        this.maxChildren = other.maxChildren;
+        this.model = other.model;
+    }
 
 }
