@@ -27,6 +27,7 @@ public abstract class NodeClass
 {
 
     public NodeData data;
+    public float maxHealth;
     public GameObject model;
     public List<NodeClass> children= new List<NodeClass>();
     public Dictionary<NodeClass,LineRenderer> Parent= new Dictionary<NodeClass,LineRenderer>();
