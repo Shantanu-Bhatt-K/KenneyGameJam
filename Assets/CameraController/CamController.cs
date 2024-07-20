@@ -37,7 +37,7 @@ public class CamController : MonoBehaviour
         // Zoom the camera based on input
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         distance -= scroll * zoomSpeed;
-        distance = Mathf.Clamp(distance, 2.0f, 15.0f); // Clamp zoom distance
+        distance = Mathf.Clamp(distance, 2.0f, 50.0f); // Clamp zoom distance
 
         // Calculate the new position and rotation of the camera
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
