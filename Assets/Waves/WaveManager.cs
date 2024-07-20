@@ -15,7 +15,11 @@ public class WaveManager : MonoBehaviour
     // Random number generator to release
     System.Random random;
     private float _timer;
-    private const float TIME_BETWEEN_WAVES = 7f;
+    public int _startingNumberOfEnemies;
+
+    public event EventHandler OnNewWave;
+    public float _timeBetweenWaves;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +38,7 @@ public class WaveManager : MonoBehaviour
         if(!_hasActiveWave && _timer < 0)
         {
             CreateWave(_entryPoints);
+            OnNewWave(this, EventArgs.Empty);
         }
     }
 
@@ -48,13 +53,17 @@ public class WaveManager : MonoBehaviour
         _entryPoints = list;
         _waveObject = new GameObject("Wave");
         _currentWave = gameObject.AddComponent<Wave>();
-        _currentWave.Create(_entryPoints, _enemyPrefabs, 5, 2000, 3);
-        _currentWave.OnFinish += WaveComplete;
+        _currentWave.Create(_entryPoints, _enemyPrefabs, _startingNumberOfEnemies + _currentWaveIndex * 2, 2500, 3);
+        //_currentWave.OnFinish += WaveComplete;
         _currentWaveIndex++;
     }
-    private void WaveComplete(object sender, EventArgs eventArgs)
+    public void SetTimer(float time)
     {
+        _timer = time;
+    }
+    public void ResetTimer()
+    {
+        _timer = _timeBetweenWaves;
         _hasActiveWave = false;
-        _timer = TIME_BETWEEN_WAVES;
     }
 }

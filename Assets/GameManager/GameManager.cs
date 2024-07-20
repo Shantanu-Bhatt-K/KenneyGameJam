@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal;
@@ -7,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     // Waves creator and manager
     public WaveManager _waveManager;
+    private bool _hasActiveWave;
     // List of active enemies
     public static List<GameObject> _enemyInformationList = new List<GameObject>();
     // time in between each calculation of nodes and enemies
@@ -28,7 +30,7 @@ public class GameManager : MonoBehaviour
     public List<NodeClass> entryNodes = new List<NodeClass>();
 
 
-
+    private int _enemiesKilled = 0;
 
     public int gameCoins = 10000;
     public int coinsPerTick = 1;
@@ -61,6 +63,8 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R) && !isEditMode)
         {
             _waveManager.GetComponent<WaveManager>().StartWaves(entryNodes);
+            _hasActiveWave = true;
+            _waveManager.OnNewWave += (object sender, EventArgs e) => { isEditMode = false; _hasActiveWave = true; };
         }
 
 
@@ -81,7 +85,6 @@ public class GameManager : MonoBehaviour
 
     void Playmode()
     {
-
         if (_calculationTimer < 0)
         {
             CalculateInteractions();
@@ -120,7 +123,6 @@ public class GameManager : MonoBehaviour
                     }
                     else if (!enemyInformation._nextNodes[0].data.isHacked)
                     {
-                        //Debug.Log(enemyInformation._nextNodes.Count);
                         targetNode = enemyInformation._nextNodes[0];
                     }
                     enemy.transform.position = enemyInformation._currentNode.model.transform.position;
@@ -174,6 +176,18 @@ public class GameManager : MonoBehaviour
                 GameObject.Destroy(nodesAndEnemies[node]);
                 // Remove the key from dictionary (will be replaced in the next calculation)
                 nodesAndEnemies.Remove(node);
+                _enemiesKilled++;
+
+                //  One wave finished
+                if (_enemyInformationList.Count == 0)
+                {
+                    _waveManager.ResetTimer();
+                    _hasActiveWave = false;
+                    // TODO: add the continue button here
+                    // Set the waveManagerTimer
+                    isEditMode = true;
+                    return;
+                }
             }
 
             // Destroy the node
@@ -209,7 +223,7 @@ public class GameManager : MonoBehaviour
     public void AddEntryNode()
     {
         EntryNode entryNode = new EntryNode();
-        entryNode.Init(Random.insideUnitSphere * 10);
+        entryNode.Init(UnityEngine.Random.insideUnitSphere * 10);
         nodeClasses.Add(entryNode);
         entryNodes.Add(entryNode);
         serverNode?.AddParentNode(entryNode);

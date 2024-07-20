@@ -15,7 +15,6 @@ public class Wave : MonoBehaviour
     System.Random random;
     float timer;
     bool _isFinished;
-    public event EventHandler OnFinish;
     public int GetActiveEnemyCount() { return _activeEnemies.Count; }
     public void Create(List<NodeClass> entryNodes, List<GameObject> enemyPrefabs, int enemyCount, int spawnRate, int highestEnemyLevel)
     {
@@ -44,7 +43,6 @@ public class Wave : MonoBehaviour
         if (_enemyCount == 0)
         {
             _isFinished = true;
-            OnFinish(this, EventArgs.Empty);
             Destroy(this);
         }
         if (timer < 0 && !_isFinished)
