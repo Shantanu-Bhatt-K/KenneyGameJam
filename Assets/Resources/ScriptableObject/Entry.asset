@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Entry
   m_EditorClassIdentifier: 
   health: 0
-  type: 2
+  type: 3
   dmg: 0
   damagePerHit: 0
   hitsPerSecond: 0
@@ -21,3 +21,4 @@ MonoBehaviour:
   isHacked: 1
   maxChildren: 1
   model: {fileID: 1182336411079941174, guid: 844ad696b23d9c94882810669ccdfb35, type: 3}
+  cost: 0

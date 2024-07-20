@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     // time in between each calculation of nodes and enemies
     private const float WORLD_CALCULATION_INTERVAL = 1f;
     private float _calculationTimer = WORLD_CALCULATION_INTERVAL;
+    // This flag will be toggled every time an enemy chooses a side
+    bool branchingFlag = false;
+
     public PlacementManager placementManager = new PlacementManager();
 
     public List<NodeData> nodeData;
@@ -27,7 +30,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    public int gameCoins=100;
+    public int gameCoins = 100;
     public int coinsPerTick = 1;
     // Start is called before the first frame update
     void Start()
@@ -60,7 +63,7 @@ public class GameManager : MonoBehaviour
             _waveManager.GetComponent<WaveManager>().StartWaves(entryNodes);
         }
 
-        
+
 
 
         if (isEditMode)
@@ -78,7 +81,7 @@ public class GameManager : MonoBehaviour
 
     void Playmode()
     {
-        for(int i=0;i<nodeClasses.Count;i++)
+        for (int i = 0; i < nodeClasses.Count; i++)
         {
             nodeClasses[i].Update();
         }
@@ -96,8 +99,6 @@ public class GameManager : MonoBehaviour
         Dictionary<NodeClass, float> nodesUnderAttack = new Dictionary<NodeClass, float>();
         // List of nodes under attack with the enemy on the front
         Dictionary<NodeClass, GameObject> nodesAndEnemies = new Dictionary<NodeClass, GameObject>();
-        // This flag will be toggled every time an enemy chooses a side
-        bool branchingFlag = false;
         foreach (var enemy in _enemyInformationList)
         {
             EnemyInformation enemyInformation = enemy.GetComponent<EnemyInformation>();
@@ -109,22 +110,21 @@ public class GameManager : MonoBehaviour
                 if (enemyInformation._nextNodes[i].data.isHacked)
                 {
                     enemyInformation._currentNode = enemyInformation._nextNodes[i];
-                    enemy.transform.position = enemyInformation._currentNode.model.transform.position;
                     enemyInformation._nextNodes = enemyInformation._nextNodes[i].children;
                     // Then set the new target node
                     // If the node we just moved is branching
                     if (enemyInformation._currentNode.data.type == Nodetype.Branch)
                     {
-                        Debug.Log(enemyInformation._nextNodes.Count);
                         enemyInformation._currentNode = branchingFlag ? enemyInformation._nextNodes[0] : enemyInformation._nextNodes[1];
                         enemyInformation._nextNodes = branchingFlag ? enemyInformation._nextNodes[0].children : enemyInformation._nextNodes[1].children;
                         branchingFlag = !branchingFlag;
                     }
                     else if (!enemyInformation._nextNodes[0].data.isHacked)
                     {
-                        Debug.Log(enemyInformation._nextNodes.Count);
+                        //Debug.Log(enemyInformation._nextNodes.Count);
                         targetNode = enemyInformation._nextNodes[0];
                     }
+                    enemy.transform.position = enemyInformation._currentNode.model.transform.position;
 
                     break;
                 }
@@ -132,12 +132,10 @@ public class GameManager : MonoBehaviour
                 if (!enemyInformation._nextNodes[i].data.isHacked)
                 {
                     // Branching node is hacked by default
-                        targetNode = enemyInformation._nextNodes[i];
+                    targetNode = enemyInformation._nextNodes[i];
                     break;
                 }
             }
-
-            //Debug.Log(targetNode?.data.type);
 
             if (targetNode != null)
             {
@@ -190,7 +188,7 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log("Branch down!");
                 }
-                if(node.data.type==Nodetype.Farm)
+                if (node.data.type == Nodetype.Farm)
                 {
                     Debug.Log("Farm Down");
                 }

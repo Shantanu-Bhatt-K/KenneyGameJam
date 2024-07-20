@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Farm
   m_EditorClassIdentifier: 
   health: 200
-  type: 1
+  type: 2
   dmg: 0
   damagePerHit: 0
   hitsPerSecond: 0
