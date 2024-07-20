@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    // Waves creator and manager
+    public WaveManager _waveManager;
     public List<NodeData> nodeData;
     List<NodeClass> nodeClasses= new List<NodeClass>();
     public List<Material> materials;
@@ -38,6 +40,10 @@ public class GameManager : MonoBehaviour
             Debug.Log("Exit Edit Mode");
             parentNode = null;
             isEditMode = false;
+        }
+        if (Input.GetKeyDown(KeyCode.R) && !isEditMode)
+        {
+            _waveManager.GetComponent<WaveManager>().StartWaves();
         }
 
 
