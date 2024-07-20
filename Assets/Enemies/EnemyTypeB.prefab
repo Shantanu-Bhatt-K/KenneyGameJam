@@ -77,10 +77,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1c65fb238dd1e43a6fd8914f615f02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 100
+  _health: 150
   _value: 5
   _damagePerHit: 5
   _hitPerSecond: 2
   _level: 1
   _isActive: 0
   _isDead: 0
+  _id: 0

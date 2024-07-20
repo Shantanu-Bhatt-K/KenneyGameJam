@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     // Waves creator and manager
     public WaveManager _waveManager;
     // List of active enemies
-    public static List<EnemyInformation> _enemyInformationList = new List<EnemyInformation>();
+    public static List<GameObject> _enemyInformationList = new List<GameObject>();
     // time in between each calculation of nodes and enemies
     private const float WORLD_CALCULATION_INTERVAL = 1f;
     private float _calculationTimer = WORLD_CALCULATION_INTERVAL;
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
         serverNode.Init(entryNodes[0], Vector3.zero);
         Camera.main.GetComponent<CamController>().SetTarget(serverNode.model.transform);
         placementManager.serverNode = serverNode;
-        placementManager.gameManager= this;
+        placementManager.gameManager = this;
     }
 
     // Update is called once per frame
@@ -82,21 +82,60 @@ public class GameManager : MonoBehaviour
     {
         // List of nodes under attack with the total firepower against
         Dictionary<NodeClass, float> nodesUnderAttack = new Dictionary<NodeClass, float>();
+        Dictionary<NodeClass, GameObject> nodesAndEnemies = new Dictionary<NodeClass, GameObject>();
         foreach (var enemy in _enemyInformationList)
         {
-            NodeClass targetNode = enemy._nextNodes[0];
-            //Debug.Log(enemy._damagePerHit * enemy._hitPerSecond);
+            EnemyInformation enemyInformation = enemy.GetComponent<EnemyInformation>();
+            NodeClass targetNode = enemyInformation._nextNodes[0];
+
             if (nodesUnderAttack.ContainsKey(targetNode))
-                nodesUnderAttack[targetNode] += enemy._damagePerHit * enemy._hitPerSecond;
+                nodesUnderAttack[targetNode] += enemyInformation._damagePerHit * enemyInformation._hitPerSecond;
             else
-                nodesUnderAttack.Add(targetNode, enemy._damagePerHit * enemy._hitPerSecond);
+                nodesUnderAttack.Add(targetNode, enemyInformation._damagePerHit * enemyInformation._hitPerSecond);
+            // 
+            if (nodesAndEnemies.ContainsKey(targetNode))
+            {
+                if (nodesAndEnemies[targetNode].GetComponent<EnemyInformation>()._health < 0)
+                {
+                    nodesAndEnemies[targetNode] = enemy;
+                }
+            }
+            else
+                nodesAndEnemies.Add(targetNode, enemy);
         }
 
+        // For each Node under attack
         foreach (var attackedNode in nodesUnderAttack)
         {
             NodeClass node = attackedNode.Key;
-            float attackPower = attackedNode.Value;
-            Debug.Log(node.data.damagePerHit * node.data.hitsPerSecond - attackPower);
+            float nodeAttackPower = node.data.damagePerHit * node.data.hitsPerSecond;
+            float enemyAttackPower = attackedNode.Value;
+
+            // Apply damages
+            node.data.health -= enemyAttackPower;
+            nodesAndEnemies[node].GetComponent<EnemyInformation>()._health -= nodeAttackPower;
+
+            // Destroy the front attacker
+            if (nodesAndEnemies[node].GetComponent<EnemyInformation>()._health < 0)
+            {
+                _enemyInformationList.Remove(nodesAndEnemies[node]);
+                GameObject.Destroy(nodesAndEnemies[node]);
+                // Remove the key from dictionary (will be replaced in the next calculation)
+                nodesAndEnemies.Remove(node);
+            }
+            else
+            {
+                Debug.Log("enemy health:" + nodesAndEnemies[node]?.GetComponent<EnemyInformation>()._health);
+            }
+
+            if (node.data.health < 0)
+            {
+                node.data.isHacked = true;
+            }
+            else
+            {
+                Debug.Log("Node health: " + node.data.health);
+            }
         }
 
     }

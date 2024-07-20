@@ -61,8 +61,8 @@ public class Wave : MonoBehaviour
                 entryNode.model.transform.position, Quaternion.identity);
             EnemyInformation enemyInformation = enemy.GetComponent<EnemyInformation>();
             enemyInformation._nextNodes = entryNode.children;
-            enemyInformation._id = GameManager._enemyInformationList[GameManager._enemyInformationList.Count-1]._id + 1;
-            GameManager._enemyInformationList.Add(enemyInformation);
+            //enemyInformation._id = GameManager._enemyInformationList[GameManager._enemyInformationList.Count]._id + 1;
+            GameManager._enemyInformationList.Add(enemy);
 
             // Remove the enemy from the waiting list
             _enemyCount--;
