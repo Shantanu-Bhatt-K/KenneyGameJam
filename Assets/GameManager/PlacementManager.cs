@@ -27,20 +27,28 @@ public class PlacementManager
             case Nodetype.Turret:
                 TurretNode tnode = new TurretNode();
                 tnode.Init(parent, position);
+                tnode.gameManager = gameManager;
+                gameManager.nodeClasses.Add(tnode);
                 gameManager.gameCoins -= tnode.data.cost;
                 break;
             case Nodetype.Branch:
                 BranchingNode bnode = new BranchingNode();
                 bnode.Init(parent, position);
+                bnode.gameManager = gameManager;
+                gameManager.nodeClasses.Add(bnode);
                 tnode = new TurretNode();
                 tnode.Init(bnode, position + Random.insideUnitSphere * 4f);
+                tnode.gameManager = gameManager;
                 serverNode.AddParentNode(tnode);
+                gameManager.nodeClasses.Add(tnode);
                 gameManager.gameCoins -= bnode.data.cost;
 
                 break;
             case Nodetype.Farm:
                 FarmNode fnode = new FarmNode();
                 fnode.Init(parent, position);
+                fnode.gameManager = gameManager;
+                gameManager.nodeClasses.Add(fnode);
                 gameManager.gameCoins -= fnode.data.cost;
                 break;
 

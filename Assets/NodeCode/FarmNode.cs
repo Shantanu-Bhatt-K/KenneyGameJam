@@ -18,7 +18,11 @@ public class FarmNode : NodeClass
         throw new System.NotImplementedException();
     }
 
-   
+    public override void Update()
+    {
+        gameManager.gameCoins += (int)data.coinCount;
+        Debug.Log("MainClass");
+    }
 
     public override void AddParentNode(NodeClass _parent)
     {

@@ -35,5 +35,8 @@ public class ServerNode :NodeClass
         Parent.Add(_parent,lineRenderer);
     }
 
-
+    public override void Update()
+    {
+        
+    }
 }

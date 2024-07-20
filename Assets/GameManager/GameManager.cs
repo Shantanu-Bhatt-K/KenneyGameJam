@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public PlacementManager placementManager = new PlacementManager();
 
     public List<NodeData> nodeData;
-    List<NodeClass> nodeClasses = new List<NodeClass>();
+    public List<NodeClass> nodeClasses = new List<NodeClass>();
     public List<Material> materials;
     public bool isEditMode;
     public NodeClass parentNode;
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    public int gameCoins = 100;
+    public int gameCoins = 10000;
     public int coinsPerTick = 1;
     // Start is called before the first frame update
     void Start()
@@ -81,15 +81,14 @@ public class GameManager : MonoBehaviour
 
     void Playmode()
     {
-        for (int i = 0; i < nodeClasses.Count; i++)
-        {
-            nodeClasses[i].Update();
-        }
+        
         if (_calculationTimer < 0)
         {
             CalculateInteractions();
             _calculationTimer = WORLD_CALCULATION_INTERVAL;
             UpdateCoins();
+            foreach (NodeClass node in nodeClasses)
+                node.Update();
         }
         _calculationTimer -= Time.deltaTime;
     }

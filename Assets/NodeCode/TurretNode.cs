@@ -34,5 +34,9 @@ public class TurretNode : NodeClass
         lineRenderer.SetMaterials(GameObject.FindFirstObjectByType<GameManager>().materials);
         Parent.Add(_parent, lineRenderer);
     }
-    
+
+    public override void Update()
+    {
+        
+    }
 }

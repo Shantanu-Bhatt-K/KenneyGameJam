@@ -270,7 +270,7 @@ MonoBehaviour:
   materials:
   - {fileID: 2100000, guid: 98f48e3080d76724a959e46589a766e5, type: 2}
   isEditMode: 0
-  gameCoins: 100
+  gameCoins: 100000
   coinsPerTick: 1
 --- !u!1 &963194225
 GameObject:

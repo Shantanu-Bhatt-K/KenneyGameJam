@@ -33,10 +33,8 @@ public abstract class NodeClass
     public GameManager gameManager;
     public abstract void Init( NodeClass _parent,Vector3 position);
     public abstract void Init(Vector3 position );
-    public virtual void Update()
-    {
-       
-    }
+    public abstract void Update();
+   
 
     public abstract void AddParentNode(NodeClass _parent);
 
