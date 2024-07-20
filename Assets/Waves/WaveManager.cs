@@ -8,10 +8,14 @@ public class WaveManager : MonoBehaviour
     public List<GameObject> _enemyPrefabs;
     private List<NodeClass> _entryPoints;
     private Wave _currentWave;
+    private int _numberOfWaves;
     GameObject _waveObject;
     private int _currentWaveIndex;
+    private bool _hasActiveWave;
     // Random number generator to release
     System.Random random;
+    private float _timer;
+    private const float TIME_BETWEEN_WAVES = 7f;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,16 +24,17 @@ public class WaveManager : MonoBehaviour
         _currentWave = null;
         _waveObject = null;
         _currentWaveIndex = 0;
+        _timer = 1000f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_currentWaveIndex == 1)
+        _timer -= Time.deltaTime;
+        if(!_hasActiveWave && _timer < 0)
         {
-            // Add another random entry point
+            CreateWave(_entryPoints);
         }
-
     }
 
     public void StartWaves(List<NodeClass> list)
@@ -39,6 +44,7 @@ public class WaveManager : MonoBehaviour
     }
     public void CreateWave(List<NodeClass> list)
     {
+        _hasActiveWave = true;
         _entryPoints = list;
         _waveObject = new GameObject("Wave");
         _currentWave = gameObject.AddComponent<Wave>();
@@ -48,8 +54,7 @@ public class WaveManager : MonoBehaviour
     }
     private void WaveComplete(object sender, EventArgs eventArgs)
     {
-        if (_currentWaveIndex < 2)
-            CreateWave(_entryPoints);
-
+        _hasActiveWave = false;
+        _timer = TIME_BETWEEN_WAVES;
     }
 }
