@@ -88,31 +88,52 @@ public class GameManager : MonoBehaviour
         {
             EnemyInformation enemyInformation = enemy.GetComponent<EnemyInformation>();
             // Finding target Node
-            NodeClass targetNode = enemyInformation._nextNodes[0];
-            foreach (var node in enemyInformation._nextNodes)
+            NodeClass targetNode = null;
+            for (int i = 0; i < enemyInformation._nextNodes.Count; i++)
             {
-                // Find the first Unhacked node
-                if (!node.data.isHacked)
+                // If the next Node is hacked change the node
+                if (enemyInformation._nextNodes[i].data.isHacked)
                 {
-                    targetNode = node;
+                    enemyInformation._currentNode = enemyInformation._nextNodes[i];
+                    enemyInformation._nextNodes = enemyInformation._nextNodes[i].children;
+                    // Then set the new target node
+                    foreach (var child in enemyInformation._nextNodes)
+                    {
+                        if (!child.data.isHacked)
+                        {
+                            targetNode = child;
+                        }
+                    }
+                    break;
+                }
+                // If next node is not hacked set it as target
+                if (!enemyInformation._nextNodes[i].data.isHacked)
+                {
+                    targetNode = enemyInformation._nextNodes[i];
                     break;
                 }
             }
 
-            if (nodesUnderAttack.ContainsKey(targetNode))
-                nodesUnderAttack[targetNode] += enemyInformation._damagePerHit * enemyInformation._hitPerSecond;
-            else
-                nodesUnderAttack.Add(targetNode, enemyInformation._damagePerHit * enemyInformation._hitPerSecond);
-            // 
-            if (nodesAndEnemies.ContainsKey(targetNode))
+            Debug.Log(targetNode?.data.type);
+
+
+            if (targetNode != null)
             {
-                if (nodesAndEnemies[targetNode].GetComponent<EnemyInformation>()._health < 0)
+                if (nodesUnderAttack.ContainsKey(targetNode))
+                    nodesUnderAttack[targetNode] += enemyInformation._damagePerHit * enemyInformation._hitPerSecond;
+                else
+                    nodesUnderAttack.Add(targetNode, enemyInformation._damagePerHit * enemyInformation._hitPerSecond);
+                // 
+                if (nodesAndEnemies.ContainsKey(targetNode))
                 {
-                    nodesAndEnemies[targetNode] = enemy;
+                    if (nodesAndEnemies[targetNode].GetComponent<EnemyInformation>()._health < 0)
+                    {
+                        nodesAndEnemies[targetNode] = enemy;
+                    }
                 }
+                else
+                    nodesAndEnemies.Add(targetNode, enemy);
             }
-            else
-                nodesAndEnemies.Add(targetNode, enemy);
         }
 
         // For each Node under attack
@@ -136,7 +157,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("enemy health:" + nodesAndEnemies[node]?.GetComponent<EnemyInformation>()._health);
+                //Debug.Log("enemy health:" + nodesAndEnemies[node]?.GetComponent<EnemyInformation>()._health);
             }
 
             if (node.data.health < 0)
@@ -145,8 +166,9 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.Log(node.data.name + " health: " + node.data.health);
+                //Debug.Log("Node health: " + node.data.health);
             }
+            //Debug.Log("Node hacked: " + node.data.isHacked);
         }
 
     }
