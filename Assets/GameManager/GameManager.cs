@@ -82,11 +82,22 @@ public class GameManager : MonoBehaviour
     {
         // List of nodes under attack with the total firepower against
         Dictionary<NodeClass, float> nodesUnderAttack = new Dictionary<NodeClass, float>();
+        // List of nodes under attack with the enemy on the front
         Dictionary<NodeClass, GameObject> nodesAndEnemies = new Dictionary<NodeClass, GameObject>();
         foreach (var enemy in _enemyInformationList)
         {
             EnemyInformation enemyInformation = enemy.GetComponent<EnemyInformation>();
+            // Finding target Node
             NodeClass targetNode = enemyInformation._nextNodes[0];
+            foreach (var node in enemyInformation._nextNodes)
+            {
+                // Find the first Unhacked node
+                if (!node.data.isHacked)
+                {
+                    targetNode = node;
+                    break;
+                }
+            }
 
             if (nodesUnderAttack.ContainsKey(targetNode))
                 nodesUnderAttack[targetNode] += enemyInformation._damagePerHit * enemyInformation._hitPerSecond;
@@ -134,7 +145,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Node health: " + node.data.health);
+                Debug.Log(node.data.name + " health: " + node.data.health);
             }
         }
 

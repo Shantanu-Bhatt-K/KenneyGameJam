@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a91cf4897cd5b174b85d213896486fc4, type: 3}
   m_Name: Server
   m_EditorClassIdentifier: 
-  health: 1000
+  health: 500
   type: 3
   dmg: 0
   damagePerHit: 100
   hitsPerSecond: 1
   coinCount: 0
-  isHacked: 1
+  isHacked: 0
   maxChildren: 0
   model: {fileID: 770361684696614661, guid: b46805edc1dfc7a4298642075cf30a0f, type: 3}
