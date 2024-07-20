@@ -183,6 +183,10 @@ public class GameManager : MonoBehaviour
                 {
                     _waveManager.ResetTimer();
                     _hasActiveWave = false;
+                    foreach(NodeClass resetNode in nodeClasses)
+                    {
+                        resetNode.ResetNode();
+                    }
                     // TODO: add the continue button here
                     // Set the waveManagerTimer
                     isEditMode = true;

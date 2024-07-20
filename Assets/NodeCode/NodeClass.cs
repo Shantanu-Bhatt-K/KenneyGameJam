@@ -82,6 +82,12 @@ public abstract class NodeClass
             children.Remove(child);
     }
 
+    public virtual void ResetNode()
+    {
+        data = new NodeData(Resources.Load<NodeData>("ScriptableObject/" + data.type));
+
+    }
+
 
     
 }

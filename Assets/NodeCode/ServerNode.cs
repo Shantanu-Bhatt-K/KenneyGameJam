@@ -39,4 +39,8 @@ public class ServerNode :NodeClass
     {
         
     }
+    public override void ResetNode()
+    {
+        
+    }
 }
