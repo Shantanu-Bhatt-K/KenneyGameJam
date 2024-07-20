@@ -21,7 +21,7 @@ public class BranchingNode :NodeClass
 
     public override void Init( NodeClass _parent, Vector3 position)
     {
-        this.data = Resources.Load<NodeData>("ScriptableObject/Brancher");
+        this.data = new NodeData(Resources.Load<NodeData>("ScriptableObject/Brancher"));
         model = GameObject.Instantiate(data.model, position, Quaternion.identity);
         model.GetComponent<NodeReference>().noderef = this;
         AddParentNode(_parent);

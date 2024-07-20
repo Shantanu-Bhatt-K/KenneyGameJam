@@ -84,6 +84,8 @@ public class GameManager : MonoBehaviour
         Dictionary<NodeClass, float> nodesUnderAttack = new Dictionary<NodeClass, float>();
         // List of nodes under attack with the enemy on the front
         Dictionary<NodeClass, GameObject> nodesAndEnemies = new Dictionary<NodeClass, GameObject>();
+        // This flag will be toggled every time an enemy chooses a side
+        bool branchingFlag = false;
         foreach (var enemy in _enemyInformationList)
         {
             EnemyInformation enemyInformation = enemy.GetComponent<EnemyInformation>();
@@ -95,11 +97,18 @@ public class GameManager : MonoBehaviour
                 if (enemyInformation._nextNodes[i].data.isHacked)
                 {
                     enemyInformation._currentNode = enemyInformation._nextNodes[i];
+                    enemy.transform.position = enemyInformation._currentNode.model.transform.position;
                     enemyInformation._nextNodes = enemyInformation._nextNodes[i].children;
                     // Then set the new target node
                     foreach (var child in enemyInformation._nextNodes)
                     {
-                        if (!child.data.isHacked)
+                        // If the node we just moved is branching
+                        if (enemyInformation._currentNode.data.type == Nodetype.Branch)
+                        {
+                            targetNode = branchingFlag ? enemyInformation._nextNodes[0] : enemyInformation._nextNodes[1];
+                            branchingFlag = !branchingFlag;
+                        }
+                        else if (!child.data.isHacked)
                         {
                             targetNode = child;
                         }
@@ -109,12 +118,21 @@ public class GameManager : MonoBehaviour
                 // If next node is not hacked set it as target
                 if (!enemyInformation._nextNodes[i].data.isHacked)
                 {
-                    targetNode = enemyInformation._nextNodes[i];
+                    if (enemyInformation._currentNode.data.type == Nodetype.Branch)
+                    {
+                        targetNode = branchingFlag ? enemyInformation._nextNodes[0] : enemyInformation._nextNodes[1];
+                        branchingFlag = !branchingFlag;
+                    }
+                    else
+                    {
+                        targetNode = enemyInformation._nextNodes[i];
+                    }
                     break;
                 }
             }
 
             Debug.Log(targetNode?.data.type);
+            Debug.Log(branchingFlag.ToString());
 
 
             if (targetNode != null)
@@ -155,22 +173,25 @@ public class GameManager : MonoBehaviour
                 // Remove the key from dictionary (will be replaced in the next calculation)
                 nodesAndEnemies.Remove(node);
             }
-            else
-            {
-                //Debug.Log("enemy health:" + nodesAndEnemies[node]?.GetComponent<EnemyInformation>()._health);
-            }
 
+            // Destroy the node
             if (node.data.health < 0)
             {
                 node.data.isHacked = true;
+                if (node.data.type == Nodetype.Turret)
+                {
+                    Debug.Log("Turret down!");
+                }
+                if (node.data.type == Nodetype.Branch)
+                {
+                    Debug.Log("Branch down!");
+                }
+                if (node.data.type == Nodetype.Server)
+                {
+                    Debug.Log("Server down! You lost!!");
+                }
             }
-            else
-            {
-                //Debug.Log("Node health: " + node.data.health);
-            }
-            //Debug.Log("Node hacked: " + node.data.isHacked);
         }
-
     }
 
 

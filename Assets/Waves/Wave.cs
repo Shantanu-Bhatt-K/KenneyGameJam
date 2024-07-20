@@ -61,6 +61,7 @@ public class Wave : MonoBehaviour
                 entryNode.model.transform.position, Quaternion.identity);
             EnemyInformation enemyInformation = enemy.GetComponent<EnemyInformation>();
             enemyInformation._nextNodes = entryNode.children;
+            enemyInformation._currentNode = entryNode;
             //enemyInformation._id = GameManager._enemyInformationList[GameManager._enemyInformationList.Count]._id + 1;
             GameManager._enemyInformationList.Add(enemy);
 
