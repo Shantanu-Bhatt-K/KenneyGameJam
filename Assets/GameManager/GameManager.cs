@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
 
     void Playmode()
     {
-        
+
         if (_calculationTimer < 0)
         {
             CalculateInteractions();
@@ -169,6 +169,7 @@ public class GameManager : MonoBehaviour
             // Destroy the front attacker
             if (nodesAndEnemies[node].GetComponent<EnemyInformation>()._health < 0)
             {
+                gameCoins += nodesAndEnemies[node].GetComponent<EnemyInformation>()._value;
                 _enemyInformationList.Remove(nodesAndEnemies[node]);
                 GameObject.Destroy(nodesAndEnemies[node]);
                 // Remove the key from dictionary (will be replaced in the next calculation)

@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyInformation : MonoBehaviour
 {
     public float _health;
-    public float _value;
+    public int _value;
     public float _damagePerHit;
     public float _hitPerSecond;
     // Level of difficulty of the enemy - used in generating waves
