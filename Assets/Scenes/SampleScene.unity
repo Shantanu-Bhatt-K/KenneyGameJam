@@ -270,6 +270,8 @@ MonoBehaviour:
   materials:
   - {fileID: 2100000, guid: 98f48e3080d76724a959e46589a766e5, type: 2}
   isEditMode: 0
+  gameCoins: 100
+  coinsPerTick: 1
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,7 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  distance: 50
+  distance: 20
   zoomSpeed: 10
   rotationSpeed: 500
 --- !u!1 &1947954610

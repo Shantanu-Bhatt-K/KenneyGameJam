@@ -21,8 +21,5 @@ public class EntryNode : NodeClass
         model.GetComponent<NodeReference>().noderef = this;
     }
 
-    public override void Update()
-    {
-        
-    }
+    
 }

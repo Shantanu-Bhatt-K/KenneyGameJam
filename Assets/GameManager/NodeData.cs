@@ -14,6 +14,7 @@ public class NodeData :ScriptableObject
     public bool isHacked = false;
     public int maxChildren;
     public GameObject model;
+    public int cost;
 
     public NodeData()
     {
@@ -30,6 +31,7 @@ public class NodeData :ScriptableObject
         this.isHacked = other.isHacked;
         this.maxChildren = other.maxChildren;
         this.model = other.model;
+        this.cost = other.cost;
     }
 
 }

@@ -18,10 +18,7 @@ public class FarmNode : NodeClass
         throw new System.NotImplementedException();
     }
 
-    public override void Update()
-    {
-
-    }
+   
 
     public override void AddParentNode(NodeClass _parent)
     {

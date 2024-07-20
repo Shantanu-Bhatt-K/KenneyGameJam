@@ -21,3 +21,4 @@ MonoBehaviour:
   isHacked: 0
   maxChildren: 1
   model: {fileID: 8768397845447564645, guid: 35923e4f0311cc74bb6667d024cab996, type: 3}
+  cost: 100

@@ -19,7 +19,7 @@ public class PlacementManager
     public NodeClass childNode=null;
     public GameManager gameManager;
 
-    Nodetype placementNode;
+    Nodetype placementNode=Nodetype.None;
    public void PlaceNode(Nodetype nodetype,Vector3 position,NodeClass parent)
     {
         switch (nodetype)
@@ -27,7 +27,7 @@ public class PlacementManager
             case Nodetype.Turret:
                 TurretNode tnode = new TurretNode();
                 tnode.Init(parent, position);
-                
+                gameManager.gameCoins -= tnode.data.cost;
                 break;
             case Nodetype.Branch:
                 BranchingNode bnode = new BranchingNode();
@@ -35,12 +35,13 @@ public class PlacementManager
                 tnode = new TurretNode();
                 tnode.Init(bnode, position + Random.insideUnitSphere * 4f);
                 serverNode.AddParentNode(tnode);
-                
+                gameManager.gameCoins -= bnode.data.cost;
+
                 break;
             case Nodetype.Farm:
                 FarmNode fnode = new FarmNode();
                 fnode.Init(parent, position);
-                
+                gameManager.gameCoins -= fnode.data.cost;
                 break;
 
         }
@@ -55,20 +56,26 @@ public class PlacementManager
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("Turret");
-            placementNode = Nodetype.Turret;
+            ChangeType(Nodetype.Turret);
         }
         else if(Input.GetKeyDown(KeyCode.Alpha2))
         {
             Debug.Log("Branch");
-            placementNode = Nodetype.Branch;
+            ChangeType(Nodetype.Branch);
         }
         else if(Input.GetKeyDown(KeyCode.Alpha3))
         {
             Debug.Log("Farm");
-            placementNode = Nodetype.Farm;
+            ChangeType(Nodetype.Farm);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Debug.Log("Entry");
+            gameManager.AddEntryNode();
         }
 
-        if(Input.GetMouseButtonDown(0) && editStage==EditStage.None)
+
+        if (Input.GetMouseButtonDown(0) && editStage==EditStage.None)
         {
            
                 gameManager.StartCoroutine(SelectParent());
@@ -175,6 +182,14 @@ public class PlacementManager
     IEnumerator BuildNode()
     {
         yield return new WaitForEndOfFrame();
+        if (placementNode == Nodetype.None)
+            yield break ;
+        if (Resources.Load<NodeData>("ScriptableObject/" + placementNode.ToString()).cost >= gameManager.gameCoins)
+        {
+            Debug.Log("Insufficient Funds");
+            ChangeType(Nodetype.None);
+            editStage= EditStage.None;
+        }
         Vector3 mousePosition = Input.mousePosition;
 
         // Convert the screen space mouse position to a world space position
@@ -182,6 +197,23 @@ public class PlacementManager
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         PlaceNode(placementNode, worldPosition,parentNode);
         yield return new WaitForEndOfFrame();
+    }
+
+    public void ChangeType(Nodetype type)
+    {
+        if(type == Nodetype.None)
+        {
+            placementNode = Nodetype.None;
+            editStage = EditStage.None;
+            return;
+        }
+        if(Resources.Load<NodeData>("ScriptableObject/"+type.ToString()).cost>=gameManager.gameCoins)
+        {
+            Debug.Log("Insufficient Funds");
+            placementNode=Nodetype.None;
+        }
+        else
+            placementNode = type;
     }
 
    

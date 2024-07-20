@@ -23,6 +23,12 @@ public class GameManager : MonoBehaviour
     public ServerNode serverNode;
     Nodetype placementNode = Nodetype.Turret;
     public List<NodeClass> entryNodes = new List<NodeClass>();
+
+
+
+
+    public int gameCoins=100;
+    public int coinsPerTick = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -54,6 +60,7 @@ public class GameManager : MonoBehaviour
             _waveManager.GetComponent<WaveManager>().StartWaves(entryNodes);
         }
 
+        
 
 
         if (isEditMode)
@@ -71,10 +78,15 @@ public class GameManager : MonoBehaviour
 
     void Playmode()
     {
+        for(int i=0;i<nodeClasses.Count;i++)
+        {
+            nodeClasses[i].Update();
+        }
         if (_calculationTimer < 0)
         {
             CalculateInteractions();
             _calculationTimer = WORLD_CALCULATION_INTERVAL;
+            UpdateCoins();
         }
         _calculationTimer -= Time.deltaTime;
     }
@@ -178,6 +190,10 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log("Branch down!");
                 }
+                if(node.data.type==Nodetype.Farm)
+                {
+                    Debug.Log("Farm Down");
+                }
                 if (node.data.type == Nodetype.Server)
                 {
                     Debug.Log("Server down! You lost!!");
@@ -187,7 +203,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    void UpdateCoins()
+    {
+        gameCoins += coinsPerTick;
+        Debug.LogWarning("game Coins=" + gameCoins);
+    }
     public void AddEntryNode()
     {
         EntryNode entryNode = new EntryNode();
