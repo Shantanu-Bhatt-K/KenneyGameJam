@@ -262,6 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _waveManager: {fileID: 1947954611}
+  _projectilePrefab: {fileID: 796083058169969488, guid: adb651964f55f104cad735330863369d, type: 3}
   nodeData:
   - {fileID: 11400000, guid: a2a0dd15ff751b349bae666b5476c5ee, type: 2}
   - {fileID: 11400000, guid: 9b81c6d752e81bc4c8c287a5d4eeb7ba, type: 2}
@@ -413,8 +414,8 @@ MonoBehaviour:
   _enemyPrefabs:
   - {fileID: 7294452079841457125, guid: 4aa78e387db505448b48a3109c737632, type: 3}
   - {fileID: 8082430667885070244, guid: 1a62ec95d9336a142980384eb11a7ffc, type: 3}
-  _timeBetweenWaves: 14
   _startingNumberOfEnemies: 3
+  _timeBetweenWaves: 14
 --- !u!4 &1947954612
 Transform:
   m_ObjectHideFlags: 0

@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     // This flag will be toggled every time an enemy chooses a side
     bool branchingFlag = false;
 
+    public GameObject _projectilePrefab;
+
     public PlacementManager placementManager = new PlacementManager();
 
     public List<NodeData> nodeData;
@@ -134,6 +136,7 @@ public class GameManager : MonoBehaviour
                 {
                     // Branching node is hacked by default
                     targetNode = enemyInformation._nextNodes[i];
+                    GenerateProjectiles(targetNode, enemyInformation._currentNode);
                     break;
                 }
             }
@@ -183,7 +186,7 @@ public class GameManager : MonoBehaviour
                 {
                     _waveManager.ResetTimer();
                     _hasActiveWave = false;
-                    foreach(NodeClass resetNode in nodeClasses)
+                    foreach (NodeClass resetNode in nodeClasses)
                     {
                         resetNode.ResetNode();
                     }
@@ -231,5 +234,14 @@ public class GameManager : MonoBehaviour
         nodeClasses.Add(entryNode);
         entryNodes.Add(entryNode);
         serverNode?.AddParentNode(entryNode);
+    }
+    private void GenerateProjectiles(NodeClass endingNode, NodeClass startingNode)
+    {
+        Vector3 distance = endingNode.model.transform.position - startingNode.model.transform.position;
+        Vector3 direction = Vector3.Normalize(distance);
+        GameObject projectile = Instantiate(_projectilePrefab, startingNode.model.transform.position, Quaternion.identity);
+        projectile.GetComponent<Rigidbody>().velocity = 10 * direction;
+        //projectile.GetComponent<Projectile>().SetDestinaion(endingNode.model.transform.position);
+        projectile.GetComponent<Projectile>().SetDistance(Vector3.Magnitude(distance));
     }
 }
