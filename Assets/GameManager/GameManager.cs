@@ -15,14 +15,13 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public ServerNode serverNode;
     Nodetype placementNode = Nodetype.Turret;
+    public List<NodeClass> entryNodes=new List<NodeClass>();
     // Start is called before the first frame update
     void Start()
     {
-        EntryNode entryNode = new EntryNode();
-        entryNode.Init( Random.insideUnitSphere* 10);
-        nodeClasses.Add(entryNode);
+        AddEntryNode();
         serverNode = new ServerNode();
-        serverNode.Init( entryNode, Vector3.zero);
+        serverNode.Init(entryNodes[0], Vector3.zero);
         Camera.main.GetComponent<CamController>().SetTarget(serverNode.model.transform);
     }
 
@@ -73,6 +72,13 @@ public class GameManager : MonoBehaviour
             placementNode = Nodetype.Farm;
             Debug.Log("Current node" + placementNode);
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            AddEntryNode();
+            Debug.Log("Added entry Node" );
+
+        }
+
         if (Input.GetMouseButtonDown(1))
         {
             // Perform a raycast from the mouse position
@@ -133,6 +139,7 @@ public class GameManager : MonoBehaviour
                     fnode.Init(parentNode, worldPosition);
                     parentNode = null;
                     break;
+                
             }
         }
             
@@ -143,4 +150,13 @@ public class GameManager : MonoBehaviour
 
     }
 
+
+    public void AddEntryNode()
+    {
+        EntryNode entryNode = new EntryNode();
+        entryNode.Init(Random.insideUnitSphere * 10);
+        nodeClasses.Add(entryNode);
+        entryNodes.Add(entryNode);
+        serverNode?.AddParentNode(entryNode);
+    }
 }
