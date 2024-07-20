@@ -63,7 +63,7 @@ public abstract class NodeClass
     {
         if (children.Count >= data.maxChildren)
         {
-            NodeClass oldChild=children.LastOrDefault();
+            NodeClass oldChild=GameObject.FindAnyObjectByType<GameManager>().placementManager.childNode;
             children.Remove(oldChild);
             children.Add(child);
             child.AddChildren(oldChild);
