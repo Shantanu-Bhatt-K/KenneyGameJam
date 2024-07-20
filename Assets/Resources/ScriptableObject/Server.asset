@@ -15,7 +15,9 @@ MonoBehaviour:
   health: 500
   type: 3
   dmg: 0
-  damagePerHit: 0
-  hitsPerSecond: 0
+  damagePerHit: 100
+  hitsPerSecond: 1
+  coinCount: 0
+  isHacked: 0
   maxChildren: 0
   model: {fileID: 770361684696614661, guid: b46805edc1dfc7a4298642075cf30a0f, type: 3}

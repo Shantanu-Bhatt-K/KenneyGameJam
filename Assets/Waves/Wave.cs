@@ -51,12 +51,18 @@ public class Wave : MonoBehaviour
         {
             // Choose a random entry node
             NodeClass entryNode = _entryNodes[random.Next(0, _entryNodes.Count)];
+            // Choose an enemy type randomly
+            GameObject enemyPrefab = _enemyPrefabs[random.Next(0, _enemyPrefabs.Count)];
+
 
             // Put the eneiesy in the map
             // instantiate an enemy in the entry node location
-            GameObject enemy = Instantiate(_enemyPrefabs[random.Next(0, _enemyPrefabs.Count)],
+            GameObject enemy = Instantiate(enemyPrefab,
                 entryNode.model.transform.position, Quaternion.identity);
-            enemy.AddComponent<EnemyInformation>()._nextNodes = entryNode.children;
+            EnemyInformation enemyInformation = enemy.GetComponent<EnemyInformation>();
+            enemyInformation._nextNodes = entryNode.children;
+            enemyInformation._id = GameManager._enemyInformationList[GameManager._enemyInformationList.Count-1]._id + 1;
+            GameManager._enemyInformationList.Add(enemyInformation);
 
             // Remove the enemy from the waiting list
             _enemyCount--;

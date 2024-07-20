@@ -6,8 +6,8 @@ public class EnemyInformation : MonoBehaviour
 {
     public float _health;
     public float _value;
-    public float _attackSpeed;
-    public float _attackDamage;
+    public float _damagePerHit;
+    public float _hitPerSecond;
     // Level of difficulty of the enemy - used in generating waves
     public int _level;
     // The current Node of the enemy
@@ -17,6 +17,8 @@ public class EnemyInformation : MonoBehaviour
 
     public bool _isActive;
     public bool _isDead;
+
+    public long _id = 0;
 
 
     public float GetHealth()

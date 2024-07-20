@@ -25,7 +25,7 @@ public class WaveManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_currentWaveIndex % 5 == 0)
+        if (_currentWaveIndex == 1)
         {
             // Add another random entry point
         }
@@ -48,7 +48,8 @@ public class WaveManager : MonoBehaviour
     }
     private void WaveComplete(object sender, EventArgs eventArgs)
     {
-        CreateWave(_entryPoints);
+        if (_currentWaveIndex < 2)
+            CreateWave(_entryPoints);
 
     }
 }

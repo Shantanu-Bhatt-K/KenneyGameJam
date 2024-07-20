@@ -7,6 +7,11 @@ public class GameManager : MonoBehaviour
 {
     // Waves creator and manager
     public WaveManager _waveManager;
+    // List of active enemies
+    public static List<EnemyInformation> _enemyInformationList = new List<EnemyInformation>();
+    // time in between each calculation of nodes and enemies
+    private const float WORLD_CALCULATION_INTERVAL = 1f;
+    private float _calculationTimer = WORLD_CALCULATION_INTERVAL;
     public List<NodeData> nodeData;
     List<NodeClass> nodeClasses = new List<NodeClass>();
     public List<Material> materials;
@@ -56,7 +61,6 @@ public class GameManager : MonoBehaviour
 
     void Editmode()
     {
-
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             placementNode = Nodetype.Turret;
@@ -147,6 +151,33 @@ public class GameManager : MonoBehaviour
 
     void Playmode()
     {
+        if (_calculationTimer < 0)
+        {
+            CalculateInteractions();
+            _calculationTimer = WORLD_CALCULATION_INTERVAL;
+        }
+        _calculationTimer -= Time.deltaTime;
+    }
+    void CalculateInteractions()
+    {
+        // List of nodes under attack with the total firepower against
+        Dictionary<NodeClass, float> nodesUnderAttack = new Dictionary<NodeClass, float>();
+        foreach (var enemy in _enemyInformationList)
+        {
+            NodeClass targetNode = enemy._nextNodes[0];
+            //Debug.Log(enemy._damagePerHit * enemy._hitPerSecond);
+            if (nodesUnderAttack.ContainsKey(targetNode))
+                nodesUnderAttack[targetNode] += enemy._damagePerHit * enemy._hitPerSecond;
+            else
+                nodesUnderAttack.Add(targetNode, enemy._damagePerHit * enemy._hitPerSecond);
+        }
+
+        foreach (var attackedNode in nodesUnderAttack)
+        {
+            NodeClass node = attackedNode.Key;
+            float attackPower = attackedNode.Value;
+            Debug.Log(node.data.damagePerHit * node.data.hitsPerSecond - attackPower);
+        }
 
     }
 
