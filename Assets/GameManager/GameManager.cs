@@ -100,40 +100,32 @@ public class GameManager : MonoBehaviour
                     enemy.transform.position = enemyInformation._currentNode.model.transform.position;
                     enemyInformation._nextNodes = enemyInformation._nextNodes[i].children;
                     // Then set the new target node
-                    foreach (var child in enemyInformation._nextNodes)
+                    // If the node we just moved is branching
+                    if (enemyInformation._currentNode.data.type == Nodetype.Branch)
                     {
-                        // If the node we just moved is branching
-                        if (enemyInformation._currentNode.data.type == Nodetype.Branch)
-                        {
-                            targetNode = branchingFlag ? enemyInformation._nextNodes[0] : enemyInformation._nextNodes[1];
-                            branchingFlag = !branchingFlag;
-                        }
-                        else if (!child.data.isHacked)
-                        {
-                            targetNode = child;
-                        }
+                        Debug.Log(enemyInformation._nextNodes.Count);
+                        enemyInformation._currentNode = branchingFlag ? enemyInformation._nextNodes[0] : enemyInformation._nextNodes[1];
+                        enemyInformation._nextNodes = branchingFlag ? enemyInformation._nextNodes[0].children : enemyInformation._nextNodes[1].children;
+                        branchingFlag = !branchingFlag;
                     }
+                    else if (!enemyInformation._nextNodes[0].data.isHacked)
+                    {
+                        Debug.Log(enemyInformation._nextNodes.Count);
+                        targetNode = enemyInformation._nextNodes[0];
+                    }
+
                     break;
                 }
                 // If next node is not hacked set it as target
                 if (!enemyInformation._nextNodes[i].data.isHacked)
                 {
-                    if (enemyInformation._currentNode.data.type == Nodetype.Branch)
-                    {
-                        targetNode = branchingFlag ? enemyInformation._nextNodes[0] : enemyInformation._nextNodes[1];
-                        branchingFlag = !branchingFlag;
-                    }
-                    else
-                    {
+                    // Branching node is hacked by default
                         targetNode = enemyInformation._nextNodes[i];
-                    }
                     break;
                 }
             }
 
-            Debug.Log(targetNode?.data.type);
-            Debug.Log(branchingFlag.ToString());
-
+            //Debug.Log(targetNode?.data.type);
 
             if (targetNode != null)
             {
@@ -189,6 +181,7 @@ public class GameManager : MonoBehaviour
                 if (node.data.type == Nodetype.Server)
                 {
                     Debug.Log("Server down! You lost!!");
+                    isEditMode = true;
                 }
             }
         }
