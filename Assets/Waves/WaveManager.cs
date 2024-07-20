@@ -6,6 +6,7 @@ using UnityEngine;
 public class WaveManager : MonoBehaviour
 {
     public List<GameObject> _enemyPrefabs;
+    private List<NodeClass> _entryPoints;
     private Wave _currentWave;
     GameObject _waveObject;
     private int _currentWaveIndex;
@@ -14,6 +15,7 @@ public class WaveManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _entryPoints = new List<NodeClass>();
         random = new System.Random();
         _currentWave = null;
         _waveObject = null;
@@ -30,23 +32,23 @@ public class WaveManager : MonoBehaviour
 
     }
 
-    public void StartWaves()
+    public void StartWaves(List<NodeClass> list)
     {
         // Creates the first wave
-        CreateWave();
+        CreateWave(list);
     }
-    public void CreateWave()
+    public void CreateWave(List<NodeClass> list)
     {
-        List<NodeClass> list = new List<NodeClass>();
+        _entryPoints = list;
         _waveObject = new GameObject("Wave");
         _currentWave = gameObject.AddComponent<Wave>();
-        _currentWave.Create(list, _enemyPrefabs, 5, 2000, 3);
+        _currentWave.Create(_entryPoints, _enemyPrefabs, 5, 2000, 3);
         _currentWave.OnFinish += WaveComplete;
         _currentWaveIndex++;
     }
     private void WaveComplete(object sender, EventArgs eventArgs)
     {
-        CreateWave();
+        CreateWave(_entryPoints);
 
     }
 }

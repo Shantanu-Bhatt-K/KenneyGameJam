@@ -8,14 +8,14 @@ public class GameManager : MonoBehaviour
     // Waves creator and manager
     public WaveManager _waveManager;
     public List<NodeData> nodeData;
-    List<NodeClass> nodeClasses= new List<NodeClass>();
+    List<NodeClass> nodeClasses = new List<NodeClass>();
     public List<Material> materials;
     public bool isEditMode;
     public NodeClass parentNode;
     [HideInInspector]
     public ServerNode serverNode;
     Nodetype placementNode = Nodetype.Turret;
-    public List<NodeClass> entryNodes=new List<NodeClass>();
+    public List<NodeClass> entryNodes = new List<NodeClass>();
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R) && !isEditMode)
         {
-            _waveManager.GetComponent<WaveManager>().StartWaves();
+            _waveManager.GetComponent<WaveManager>().StartWaves(entryNodes);
         }
 
 
@@ -56,14 +56,14 @@ public class GameManager : MonoBehaviour
 
     void Editmode()
     {
-        
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             placementNode = Nodetype.Turret;
             Debug.Log("Current node" + placementNode);
         }
-        else if(Input.GetKeyDown(KeyCode.Alpha2))
-        { 
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
             placementNode = Nodetype.Branch;
             Debug.Log("Current node" + placementNode);
         }
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             AddEntryNode();
-            Debug.Log("Added entry Node" );
+            Debug.Log("Added entry Node");
 
         }
 
@@ -90,13 +90,13 @@ public class GameManager : MonoBehaviour
                 // Get the GameObject that was hit
                 GameObject clickedObject = hit.collider.gameObject;
 
-                if(clickedObject.GetComponent<NodeReference>() != null)
+                if (clickedObject.GetComponent<NodeReference>() != null)
                 {
                     if (clickedObject.GetComponent<NodeReference>().noderef != null)
                     {
-                        
+
                         parentNode = clickedObject.GetComponent<NodeReference>().noderef;
-                        if(parentNode.GetType()==typeof(ServerNode))
+                        if (parentNode.GetType() == typeof(ServerNode))
                         {
                             Debug.Log("Cannot make Child of server node");
                             parentNode = null;
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
                         else
                             Debug.Log("FoundParent");
                     }
-                        
+
                 }
             }
         }
@@ -127,22 +127,22 @@ public class GameManager : MonoBehaviour
                     parentNode = null;
                     break;
                 case Nodetype.Branch:
-                      BranchingNode bnode= new BranchingNode();
-                    bnode.Init( parentNode, worldPosition);
-                    tnode=new TurretNode();
-                    tnode.Init(bnode, worldPosition+Random.insideUnitSphere*4f);
+                    BranchingNode bnode = new BranchingNode();
+                    bnode.Init(parentNode, worldPosition);
+                    tnode = new TurretNode();
+                    tnode.Init(bnode, worldPosition + Random.insideUnitSphere * 4f);
                     serverNode.AddParentNode(tnode);
-                    parentNode=null;
+                    parentNode = null;
                     break;
                 case Nodetype.Farm:
                     FarmNode fnode = new FarmNode();
                     fnode.Init(parentNode, worldPosition);
                     parentNode = null;
                     break;
-                
+
             }
         }
-            
+
     }
 
     void Playmode()

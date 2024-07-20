@@ -12,8 +12,8 @@ public class EnemyInformation : MonoBehaviour
     public int _level;
     // The current Node of the enemy
     public NodeClass _currentNode;
-    // The node that the enemy is going to attack
-    public NodeClass _nextNode;
+    // The nodes upcoming that the enemy is going to attack
+    public List<NodeClass> _nextNodes;
 
     public bool _isActive;
     public bool _isDead;
