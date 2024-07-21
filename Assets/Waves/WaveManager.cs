@@ -71,7 +71,7 @@ public class WaveManager : MonoBehaviour
         _entryPoints = list;
         _waveObject = new GameObject("Wave");
         _currentWave = gameObject.AddComponent<Wave>();
-        _currentWave.Create(_entryPoints, _enemyPrefabs, _startingNumberOfEnemies + _currentWaveIndex * 2, 2500, 3);
+        _currentWave.Create(_entryPoints, _enemyPrefabs, _startingNumberOfEnemies + _currentWaveIndex * 2, 1700, 3);
         //_currentWave.OnFinish += WaveComplete;
         _currentWaveIndex++;
         if (_currentWaveIndex % 3 == 0)
