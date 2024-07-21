@@ -299,7 +299,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6428430694889646023, guid: e8e57b96861f00648ba320a717baf0d3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7945037910657560595, guid: e8e57b96861f00648ba320a717baf0d3, type: 3}
       propertyPath: m_Pivot.x
@@ -914,8 +914,9 @@ MonoBehaviour:
   MenuScreen: {fileID: 302551802}
   EditScreen: {fileID: 1253462058}
   GameOverScreen: {fileID: 1497347420}
+  PlayScreen: {fileID: 8277743756476383577}
   _coinNumberUI: {fileID: 1492354505}
-  _playcoinNumberUI: {fileID: 355053628}
+  _playcoinNumberUI: {fileID: 721465116}
   _enemyKilledUI: {fileID: 271637994}
   _highscoreUI: {fileID: 940606774}
   _projectilePrefab: {fileID: 796083058169969488, guid: adb651964f55f104cad735330863369d, type: 3}
@@ -2473,7 +2474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &8626242320407245617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2487,7 +2488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.35681722, g: 0.8248149, b: 0.96981126, a: 0.392}
+  m_Color: {r: 0.35681722, g: 0.8248149, b: 0.96981126, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
