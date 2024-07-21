@@ -105,4 +105,15 @@ public class TurretNode : NodeClass
         
 
     }
+
+    public override void ResetNode()
+    {
+        data = new NodeData(Resources.Load<NodeData>("ScriptableObject/" + data.type));
+        foreach (var kvp in ParentAttack)
+        {
+            kvp.Value.SetActive(false);
+        }
+        
+        fireFX.SetActive(false );
+    }
 }

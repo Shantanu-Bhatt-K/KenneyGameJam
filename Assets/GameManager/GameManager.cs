@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     public GameObject EditScreen;
     public GameObject GameOverScreen;
     public GameObject PlayScreen;
+    public GameObject EditInstruction;
+    bool resetted = false;
     // This flag will be toggled every time an enemy chooses a side
     bool branchingFlag = false;
     System.Random rand = new System.Random();
@@ -38,7 +40,7 @@ public class GameManager : MonoBehaviour
     public GameObject _playcoinNumberUI;
     public GameObject _enemyKilledUI;
     public GameObject _highscoreUI;
-
+    public GameObject gameOverScore;
     public GameObject _projectilePrefab;
 
     public PlacementManager placementManager = new PlacementManager();
@@ -77,7 +79,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UpdateCoins();
-        Debug.Log(currentState.ToString());
+      
         //if (Input.GetKeyDown(KeyCode.Q) && !isEditMode)
         //{
         //    Debug.Log("Entered Edit Mode");
@@ -102,6 +104,15 @@ public class GameManager : MonoBehaviour
         }
         else if (currentState == GameState.EditState)
         {
+            if(!resetted)
+            {
+                foreach (NodeClass resetNode in nodeClasses)
+                {
+                    resetNode.ResetNode();
+                }
+                resetted = true;
+            }
+            
             Editmode();
             EditScreen.SetActive(true);
             PlayScreen.SetActive(false);
@@ -111,6 +122,7 @@ public class GameManager : MonoBehaviour
             Playmode();
             EditScreen.SetActive(false);
             PlayScreen.SetActive(true);
+            resetted = false;
         }
 
 
@@ -238,13 +250,14 @@ public class GameManager : MonoBehaviour
                     _hasActiveWave = false;
                     currentState = GameState.EditState;
 
+                   
+                    // TODO: add the continue button here
+                    // Set the waveManagerTimer
+                    currentState = GameState.EditState;
                     foreach (NodeClass resetNode in nodeClasses)
                     {
                         resetNode.ResetNode();
                     }
-                    // TODO: add the continue button here
-                    // Set the waveManagerTimer
-                    currentState = GameState.EditState;
                     EditScreen.SetActive(true);
                     return;
                 }
@@ -271,6 +284,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Server down! You lost!!");
                     currentState = GameState.GameOverState;
                     GameOverScreen.SetActive(true);
+                    gameOverScore.GetComponent<TextMeshProUGUI>().text = "Enemies Killed: " + _enemiesKilled.ToString();
                 }
             }
         }

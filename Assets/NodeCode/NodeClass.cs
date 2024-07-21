@@ -101,7 +101,7 @@ public abstract class NodeClass
     public virtual void ResetNode()
     {
         data = new NodeData(Resources.Load<NodeData>("ScriptableObject/" + data.type));
-
+       
     }
 
 

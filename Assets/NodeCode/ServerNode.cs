@@ -107,6 +107,9 @@ public class ServerNode :NodeClass
     }
     public override void ResetNode()
     {
-        
+        foreach (var kvp in ParentAttack)
+        {
+            kvp.Value.SetActive(false);
+        }
     }
 }

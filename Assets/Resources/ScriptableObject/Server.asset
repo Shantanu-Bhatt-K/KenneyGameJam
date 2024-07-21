@@ -15,7 +15,7 @@ MonoBehaviour:
   health: 1000
   type: 5
   dmg: 0
-  damagePerHit: 100
+  damagePerHit: 50
   hitsPerSecond: 1
   coinCount: 0
   isHacked: 0

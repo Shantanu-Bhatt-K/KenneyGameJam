@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -56,11 +57,15 @@ public class PlacementManager
         parentNode = null;
         childNode = null;
         editStage = EditStage.None;
+        if (Resources.Load<NodeData>("ScriptableObject/" + placementNode.ToString()).cost > gameManager.gameCoins)
+        {
+            placementNode = Nodetype.None;
+        }
     }
 
     public void GetInput()
     {
-
+       
         //if(Input.GetKeyDown(KeyCode.Alpha1))
         //{
         //    PlaceTurret();
@@ -82,7 +87,14 @@ public class PlacementManager
         //}
 
         if (placementNode == Nodetype.None)
+        {
+            gameManager.EditInstruction.GetComponent<TextMeshProUGUI>().text = "Select Node Type";
             return;
+        }
+        else
+        {
+            gameManager.EditInstruction.GetComponent<TextMeshProUGUI>().text ="Node selected: "+placementNode+ " Select Parent Node";
+        }   
         if (Input.GetMouseButtonDown(0) && editStage==EditStage.None)
         {
            
@@ -90,6 +102,7 @@ public class PlacementManager
         }
         if(editStage==EditStage.ParentSelected)
         {
+            gameManager.EditInstruction.GetComponent<TextMeshProUGUI>().text = "Node selected: " + placementNode + " Select Child Node";
             if (!(parentNode.GetType() == typeof(BranchingNode)))
             {
                 childNode = parentNode.children[0];
@@ -104,6 +117,11 @@ public class PlacementManager
                     gameManager.StartCoroutine(SelectChild());
                 }
             }
+        }
+
+        if(editStage==EditStage.ReadyToBuild)
+        {
+            gameManager.EditInstruction.GetComponent<TextMeshProUGUI>().text = "Node selected: " + placementNode + " Click to place";
         }
         if(editStage==EditStage.ReadyToBuild && Input.GetMouseButtonDown(0))
         {
@@ -193,7 +211,7 @@ public class PlacementManager
                    childNode = clickedObject.GetComponent<NodeReference>().noderef;
                     if (!parentNode.children.Contains(childNode))
                     {
-                        Debug.Log("isNotChild");
+                        gameManager.EditInstruction.GetComponent<TextMeshProUGUI>().text = "Is Not Child";
                         parentNode = null;
                         childNode = null;
                         editStage = EditStage.None;
@@ -216,10 +234,10 @@ public class PlacementManager
     {
         yield return new WaitForEndOfFrame();
         if (placementNode == Nodetype.None)
-            yield break ;
-        if (Resources.Load<NodeData>("ScriptableObject/" + placementNode.ToString()).cost >= gameManager.gameCoins)
+            yield break;
+        if (Resources.Load<NodeData>("ScriptableObject/" + placementNode.ToString()).cost >gameManager.gameCoins)
         {
-            Debug.Log("Insufficient Funds");
+            gameManager.EditInstruction.GetComponent<TextMeshProUGUI>().text = "Insufficient Funds";
             ChangeType(Nodetype.None);
             editStage= EditStage.None;
         }
@@ -240,10 +258,10 @@ public class PlacementManager
             editStage = EditStage.None;
             return;
         }
-        if(Resources.Load<NodeData>("ScriptableObject/"+type.ToString()).cost>=gameManager.gameCoins)
+        if(Resources.Load<NodeData>("ScriptableObject/"+type.ToString()).cost>gameManager.gameCoins)
         {
-            Debug.Log("Insufficient Funds");
-            placementNode=Nodetype.None;
+            gameManager.EditInstruction.GetComponent<TextMeshProUGUI>().text = "Insufficient Funds";
+            placementNode =Nodetype.None;
         }
         else
             placementNode = type;
