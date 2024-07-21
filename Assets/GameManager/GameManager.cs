@@ -180,7 +180,8 @@ public class GameManager : MonoBehaviour
                 GenerateProjectiles(enemyInformation.GetTarget(), enemyInformation._currentNode);
             }
 
-            enemy.transform.position = enemyInformation._currentNode.model.transform.position;
+            enemy.transform.position = enemyInformation._currentNode.model.transform.position + 
+                2 * enemyInformation._currentNode.model.transform.forward;
             // Rotate enemy to look at the target
             enemy.transform.rotation = Quaternion.LookRotation(enemyInformation.GetTarget().model.transform.position - enemy.transform.position);
 
