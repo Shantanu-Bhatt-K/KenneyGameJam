@@ -11,4 +11,7 @@ public class NodeReference : MonoBehaviour
     public Canvas canvas;
     public Image img;
     public Image bgimg;
+    public GameObject fireFX;
+    public Transform endPos;
+    public Transform model;
 }
