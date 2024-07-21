@@ -61,25 +61,25 @@ public class PlacementManager
     public void GetInput()
     {
 
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            PlaceTurret();
+        //if(Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    PlaceTurret();
 
-        }
-        else if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            PlaceBranch();
-        }
-        else if(Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            PlaceFarm();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
+        //}
+        //else if(Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    PlaceBranch();
+        //}
+        //else if(Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    PlaceFarm();
+        //}
+        //else if (Input.GetKeyDown(KeyCode.Alpha4))
+        //{
 
-            Debug.Log("Entry");
-            gameManager.AddEntryNode();
-        }
+        //    Debug.Log("Entry");
+        //    gameManager.AddEntryNode();
+        //}
 
         if (placementNode == Nodetype.None)
             return;

@@ -5,8 +5,16 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum GameState
+{
+    MenuState,
+    PlayState,
+    EditState,
+    GameOverState
+}
 public class GameManager : MonoBehaviour
 {
     // Waves creator and manager
@@ -17,23 +25,27 @@ public class GameManager : MonoBehaviour
     // time in between each calculation of nodes and enemies
     private const float WORLD_CALCULATION_INTERVAL = 1f;
     private float _calculationTimer = WORLD_CALCULATION_INTERVAL;
+    public GameObject MenuScreen;
+    public GameObject EditScreen;
+    public GameObject GameOverScreen;
+    public GameObject PlayScreen;
     // This flag will be toggled every time an enemy chooses a side
     bool branchingFlag = false;
     System.Random rand = new System.Random();
-
+    
     // UI GameObjects
     public GameObject _coinNumberUI;
+    public GameObject _playcoinNumberUI;
     public GameObject _enemyKilledUI;
     public GameObject _highscoreUI;
 
     public GameObject _projectilePrefab;
 
     public PlacementManager placementManager = new PlacementManager();
-
+    public GameState currentState = GameState.MenuState;
     public List<NodeData> nodeData;
     public List<NodeClass> nodeClasses = new List<NodeClass>();
     public List<Material> materials;
-    public bool isEditMode;
     public NodeClass parentNode;
     [HideInInspector]
     public ServerNode serverNode;
@@ -60,35 +72,55 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && !isEditMode)
+        UpdateCoins();
+        Debug.Log(currentState.ToString());
+        //if (Input.GetKeyDown(KeyCode.Q) && !isEditMode)
+        //{
+        //    Debug.Log("Entered Edit Mode");
+        //    Debug.Log("Current node" + placementNode);
+        //    isEditMode = true;
+        //}
+        //else if (Input.GetKeyDown(KeyCode.Q) && isEditMode)
+        //{
+        //    Debug.Log("Exit Edit Mode");
+        //    parentNode = null;
+        //    isEditMode = false;
+        //}
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("Entered Edit Mode");
-            Debug.Log("Current node" + placementNode);
-            isEditMode = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.Q) && isEditMode)
-        {
-            Debug.Log("Exit Edit Mode");
-            parentNode = null;
-            isEditMode = false;
-        }
-        if (Input.GetKeyDown(KeyCode.R) && !isEditMode)
-        {
+
             _waveManager.GetComponent<WaveManager>().StartWaves(entryNodes);
             _hasActiveWave = true;
-            _waveManager.OnNewWave += (object sender, EventArgs e) => { isEditMode = false; _hasActiveWave = true; };
+            currentState = GameState.PlayState;
+            _waveManager.OnNewWave += (object sender, EventArgs e) => { currentState = GameState.PlayState; _hasActiveWave = true; };
+
         }
 
+        if (currentState == GameState.MenuState)
+        {
 
-
-
-        if (isEditMode)
+        }
+        else if(currentState== GameState.EditState)
+        {
             Editmode();
-        else
+            EditScreen.SetActive(true) ;
+            PlayScreen.SetActive(false);
+        }
+        else if(currentState==GameState.PlayState)
+        {
             Playmode();
+            EditScreen.SetActive(false);
+            PlayScreen.SetActive(true);
+        }
+
+           
     }
 
+    IEnumerator DelayWave()
+    {
+        yield return new WaitForSeconds(1);
 
+    }
     void Editmode()
     {
 
@@ -97,11 +129,12 @@ public class GameManager : MonoBehaviour
 
     void Playmode()
     {
+       
         if (_calculationTimer < 0)
         {
             CalculateInteractions();
             _calculationTimer = WORLD_CALCULATION_INTERVAL;
-            UpdateCoins();
+            
             foreach (NodeClass node in nodeClasses)
                 node.Update();
         }
@@ -193,13 +226,16 @@ public class GameManager : MonoBehaviour
                 {
                     _waveManager.ResetTimer();
                     _hasActiveWave = false;
+                    currentState = GameState.EditState;
+                    
                     foreach (NodeClass resetNode in nodeClasses)
                     {
                         resetNode.ResetNode();
                     }
                     // TODO: add the continue button here
                     // Set the waveManagerTimer
-                    isEditMode = true;
+                    currentState = GameState.EditState;
+                    EditScreen.SetActive(true);
                     return;
                 }
             }
@@ -223,7 +259,8 @@ public class GameManager : MonoBehaviour
                 if (node.data.type == Nodetype.Server)
                 {
                     Debug.Log("Server down! You lost!!");
-                    isEditMode = true;
+                    currentState = GameState.GameOverState;
+                    GameOverScreen.SetActive(true);
                 }
             }
         }
@@ -232,8 +269,9 @@ public class GameManager : MonoBehaviour
     void UpdateCoins()
     {
         // Update coin UI
-        if (_coinNumberUI != null)
+       
             _coinNumberUI.GetComponent<TextMeshProUGUI>().text = gameCoins.ToString();
+            _playcoinNumberUI.GetComponent<TextMeshProUGUI>().text = gameCoins.ToString();
     }
     void CheckHighScore(int killed)
     {
@@ -264,23 +302,36 @@ public class GameManager : MonoBehaviour
 
     public void PlaceFarm()
     {
-        if (isEditMode)
-        {
-            placementManager.PlaceFarm();
-        }
+       
+        placementManager.PlaceFarm();
+        
     }
     public void PlaceTurret()
     {
-        if (isEditMode)
-        {
+       
             placementManager.PlaceTurret();
-        }
+        
     }
     public void PlaceBranch()
     {
-        if (isEditMode)
-        {
+       
             placementManager.PlaceBranch();
-        }
+        
+    }
+
+    public void exitGame()
+    {
+        Application.Quit();
+    }
+
+    public void StartGame()
+    {
+        MenuScreen.SetActive(false);
+        currentState = GameState.EditState;
+        EditScreen.SetActive(true);
+    }
+    public void goMain()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
