@@ -293,6 +293,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 790794266583814038, guid: e8e57b96861f00648ba320a717baf0d3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6428430694889646023, guid: e8e57b96861f00648ba320a717baf0d3, type: 3}
       propertyPath: m_Name
       value: Menu Screen
@@ -1807,6 +1811,10 @@ PrefabInstance:
       value: 0.00024414062
       objectReference: {fileID: 0}
     - target: {fileID: 1224283670786462816, guid: a82c030d47b7b47469b11f34474ba284, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224283670786462816, guid: a82c030d47b7b47469b11f34474ba284, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -2399,6 +2407,7 @@ MonoBehaviour:
   _enemyPrefabs:
   - {fileID: 7069735766598311442, guid: 5e5508a923eab5e4ba6a5c0ff21f4a5e, type: 3}
   - {fileID: 3331650560839851611, guid: a85bd7ea17d104746ab3dda3d38fa040, type: 3}
+  _currentWaveIndex: 0
   _startingNumberOfEnemies: 4
   _timeBetweenWaves: 20
 --- !u!4 &1947954612
