@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     // UI GameObjects
     public GameObject _coinNumberUI;
     public GameObject _enemyKilledUI;
+    public GameObject _highscoreUI;
 
     public GameObject _projectilePrefab;
 
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
         Camera.main.GetComponent<CamController>().SetTarget(serverNode.model.transform);
         placementManager.serverNode = serverNode;
         placementManager.gameManager = this;
+        CheckHighScore(0);
     }
 
     // Update is called once per frame
@@ -184,6 +186,7 @@ public class GameManager : MonoBehaviour
                 _enemiesKilled++;
                 if (_enemyKilledUI != null)
                     _enemyKilledUI.GetComponent<TextMeshProUGUI>().text = "Enemies Killed: " + _enemiesKilled.ToString();
+                CheckHighScore(_enemiesKilled);
 
                 //  One wave finished
                 if (_enemyInformationList.Count == 0)
@@ -231,6 +234,15 @@ public class GameManager : MonoBehaviour
         // Update coin UI
         if (_coinNumberUI != null)
             _coinNumberUI.GetComponent<TextMeshProUGUI>().text = gameCoins.ToString();
+    }
+    void CheckHighScore(int killed)
+    {
+        if (killed > PlayerPrefs.GetInt("Highscore", 0))
+        {
+            PlayerPrefs.SetInt("Highscore", killed);
+        }
+        if (_enemyKilledUI != null)
+            _highscoreUI.GetComponent<TextMeshProUGUI>().text = "HighScore: " + PlayerPrefs.GetInt("Highscore", 0).ToString();
     }
     public void AddEntryNode()
     {
