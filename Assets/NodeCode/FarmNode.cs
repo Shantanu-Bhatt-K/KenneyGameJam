@@ -61,8 +61,8 @@ public class FarmNode : NodeClass
         lineRenderer.enabled = true;
         lineRenderer.SetPosition(0, _parent.model.transform.position);
         lineRenderer.SetPosition(1, model.transform.position);
-        lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.1f;
+        lineRenderer.startWidth = 0.05f;
+        lineRenderer.endWidth = 0.05f;
         lineRenderer.alignment = LineAlignment.View;
         lineRenderer.SetMaterials(GameObject.FindFirstObjectByType<GameManager>().materials);
         Parent.Add(_parent, lineRenderer);
