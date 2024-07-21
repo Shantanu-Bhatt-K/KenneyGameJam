@@ -22,6 +22,7 @@ public class WaveManager : MonoBehaviour
     public int _startingNumberOfEnemies;
 
     public event EventHandler OnNewWave;
+    public event EventHandler OnNewEntry;
     public float _timeBetweenWaves;
 
     // Start is called before the first frame update
@@ -41,13 +42,14 @@ public class WaveManager : MonoBehaviour
         _timer -= Time.deltaTime;
         if (!_hasActiveWave && _timer < 0)
         {
-            CreateWave(_entryPoints);
+            _hasActiveWave = true;
+            _timer = 0;
             OnNewWave(this, EventArgs.Empty);
         }
         if (_timer > 0 && _isStarted)
         {
             if (_waveUI != null)
-                    _waveUI.GetComponent<TextMeshProUGUI>().text = "Next wave in: " + ((int)_timer).ToString();
+                _waveUI.GetComponent<TextMeshProUGUI>().text = "Next wave in: " + ((int)_timer).ToString();
         }
         else if (_timer < 0 && _hasActiveWave)
         {
@@ -72,6 +74,11 @@ public class WaveManager : MonoBehaviour
         _currentWave.Create(_entryPoints, _enemyPrefabs, _startingNumberOfEnemies + _currentWaveIndex * 2, 2500, 3);
         //_currentWave.OnFinish += WaveComplete;
         _currentWaveIndex++;
+        if (_currentWaveIndex % 3 == 0)
+        {
+            OnNewEntry(this, EventArgs.Empty);
+        }
+
     }
     public void SetTimer(float time)
     {

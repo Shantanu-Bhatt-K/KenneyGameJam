@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     // This flag will be toggled every time an enemy chooses a side
     bool branchingFlag = false;
     System.Random rand = new System.Random();
-    
+
     // UI GameObjects
     public GameObject _coinNumberUI;
     public GameObject _playcoinNumberUI;
@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
         placementManager.serverNode = serverNode;
         placementManager.gameManager = this;
         CheckHighScore(0);
+        _waveManager.OnNewWave += (object sender, EventArgs e) => { NewWave(); };
+        _waveManager.OnNewEntry += (object sender, EventArgs e) => { AddEntryNode(); };
     }
 
     // Update is called once per frame
@@ -86,40 +88,43 @@ public class GameManager : MonoBehaviour
         //    parentNode = null;
         //    isEditMode = false;
         //}
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
-
-            _waveManager.GetComponent<WaveManager>().StartWaves(entryNodes);
-            _hasActiveWave = true;
-            currentState = GameState.PlayState;
-            _waveManager.OnNewWave += (object sender, EventArgs e) => { currentState = GameState.PlayState; _hasActiveWave = true; };
-
+            NewWave();
         }
 
         if (currentState == GameState.MenuState)
         {
 
         }
-        else if(currentState== GameState.EditState)
+        else if (currentState == GameState.EditState)
         {
             Editmode();
-            EditScreen.SetActive(true) ;
+            EditScreen.SetActive(true);
             PlayScreen.SetActive(false);
         }
-        else if(currentState==GameState.PlayState)
+        else if (currentState == GameState.PlayState)
         {
             Playmode();
             EditScreen.SetActive(false);
             PlayScreen.SetActive(true);
         }
 
-           
+
     }
 
     IEnumerator DelayWave()
     {
         yield return new WaitForSeconds(1);
 
+    }
+
+    void NewWave()
+    {
+        _waveManager.GetComponent<WaveManager>().StartWaves(entryNodes);
+        _hasActiveWave = true;
+        currentState = GameState.PlayState;
     }
     void Editmode()
     {
@@ -129,12 +134,12 @@ public class GameManager : MonoBehaviour
 
     void Playmode()
     {
-       
+
         if (_calculationTimer < 0)
         {
             CalculateInteractions();
             _calculationTimer = WORLD_CALCULATION_INTERVAL;
-            
+
             foreach (NodeClass node in nodeClasses)
                 node.Update();
         }
@@ -227,7 +232,7 @@ public class GameManager : MonoBehaviour
                     _waveManager.ResetTimer();
                     _hasActiveWave = false;
                     currentState = GameState.EditState;
-                    
+
                     foreach (NodeClass resetNode in nodeClasses)
                     {
                         resetNode.ResetNode();
@@ -269,9 +274,9 @@ public class GameManager : MonoBehaviour
     void UpdateCoins()
     {
         // Update coin UI
-       
-            _coinNumberUI.GetComponent<TextMeshProUGUI>().text = gameCoins.ToString();
-            _playcoinNumberUI.GetComponent<TextMeshProUGUI>().text = gameCoins.ToString();
+
+        _coinNumberUI.GetComponent<TextMeshProUGUI>().text = gameCoins.ToString();
+        _playcoinNumberUI.GetComponent<TextMeshProUGUI>().text = gameCoins.ToString();
     }
     void CheckHighScore(int killed)
     {
@@ -302,21 +307,21 @@ public class GameManager : MonoBehaviour
 
     public void PlaceFarm()
     {
-       
+
         placementManager.PlaceFarm();
-        
+
     }
     public void PlaceTurret()
     {
-       
-            placementManager.PlaceTurret();
-        
+
+        placementManager.PlaceTurret();
+
     }
     public void PlaceBranch()
     {
-       
-            placementManager.PlaceBranch();
-        
+
+        placementManager.PlaceBranch();
+
     }
 
     public void exitGame()
