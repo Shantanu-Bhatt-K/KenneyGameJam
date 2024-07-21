@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private float _calculationTimer = WORLD_CALCULATION_INTERVAL;
     // This flag will be toggled every time an enemy chooses a side
     bool branchingFlag = false;
+    System.Random rand = new System.Random();
 
     public GameObject _projectilePrefab;
 
@@ -108,39 +109,33 @@ public class GameManager : MonoBehaviour
             EnemyInformation enemyInformation = enemy.GetComponent<EnemyInformation>();
             // Finding target Node
             NodeClass targetNode = null;
-            for (int i = 0; i < enemyInformation._nextNodes.Count; i++)
+            if (enemyInformation.GetTarget() == null)
             {
-                // If the next Node is hacked change the node
-                if (enemyInformation._nextNodes[i].data.isHacked)
+                // First upcoming node is target node
+                enemyInformation.SetTarget(enemyInformation._nextNodes[0]);
+            }
+            else if (enemyInformation.GetTarget().data.isHacked)
+            {
+                enemyInformation._currentNode = enemyInformation.GetTarget();
+                if (enemyInformation.GetTarget().data.type == Nodetype.Branch)
                 {
-                    enemyInformation._currentNode = enemyInformation._nextNodes[i];
-                    enemyInformation._nextNodes = enemyInformation._nextNodes[i].children;
-                    // Then set the new target node
-                    // If the node we just moved is branching
-                    if (enemyInformation._currentNode.data.type == Nodetype.Branch)
-                    {
-                        enemyInformation._currentNode = branchingFlag ? enemyInformation._nextNodes[0] : enemyInformation._nextNodes[1];
-                        enemyInformation._nextNodes = branchingFlag ? enemyInformation._nextNodes[0].children : enemyInformation._nextNodes[1].children;
-                        branchingFlag = !branchingFlag;
-                    }
-                    else if (!enemyInformation._nextNodes[0].data.isHacked)
-                    {
-                        targetNode = enemyInformation._nextNodes[0];
-                    }
-                    enemy.transform.position = enemyInformation._currentNode.model.transform.position;
-
-                    break;
+                    int randomNum = rand.Next(0, 2);
+                    enemyInformation.SetTarget(enemyInformation.GetTarget().children[randomNum]);
                 }
-                // If next node is not hacked set it as target
-                if (!enemyInformation._nextNodes[i].data.isHacked)
+                else
                 {
-                    // Branching node is hacked by default
-                    targetNode = enemyInformation._nextNodes[i];
-                    GenerateProjectiles(targetNode, enemyInformation._currentNode);
-                    break;
+                    enemyInformation.SetTarget(enemyInformation.GetTarget().children[0]);
                 }
             }
+            else
+            {
+                GenerateProjectiles(enemyInformation.GetTarget(), enemyInformation._currentNode);
+            }
 
+            enemy.transform.position = enemyInformation._currentNode.model.transform.position;
+
+
+            targetNode = enemyInformation.GetTarget();
             if (targetNode != null)
             {
                 if (nodesUnderAttack.ContainsKey(targetNode))
@@ -230,7 +225,7 @@ public class GameManager : MonoBehaviour
     public void AddEntryNode()
     {
         EntryNode entryNode = new EntryNode();
-        entryNode.Init( UnityEngine.Random.insideUnitSphere.normalized * UnityEngine.Random.Range(8f,15f));
+        entryNode.Init(UnityEngine.Random.insideUnitSphere.normalized * UnityEngine.Random.Range(8f, 15f));
         nodeClasses.Add(entryNode);
         entryNodes.Add(entryNode);
         serverNode?.AddParentNode(entryNode);

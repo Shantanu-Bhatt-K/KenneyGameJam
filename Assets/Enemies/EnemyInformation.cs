@@ -15,6 +15,10 @@ public class EnemyInformation : MonoBehaviour
     // The nodes upcoming that the enemy is going to attack
     public List<NodeClass> _nextNodes;
 
+    private NodeClass _target;
+    public NodeClass GetTarget() { return _target; }
+    public void SetTarget(NodeClass node) { _target = node; }
+
     public bool _isActive;
     public bool _isDead;
 
@@ -28,12 +32,12 @@ public class EnemyInformation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
