@@ -182,7 +182,8 @@ public class GameManager : MonoBehaviour
                 // Remove the key from dictionary (will be replaced in the next calculation)
                 nodesAndEnemies.Remove(node);
                 _enemiesKilled++;
-                _enemyKilledUI.GetComponent<TextMeshProUGUI>().text = "Enemies Killed" + _enemiesKilled.ToString();
+                if (_enemyKilledUI != null)
+                    _enemyKilledUI.GetComponent<TextMeshProUGUI>().text = "Enemies Killed: " + _enemiesKilled.ToString();
 
                 //  One wave finished
                 if (_enemyInformationList.Count == 0)
