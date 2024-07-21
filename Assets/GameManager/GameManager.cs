@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
         //    parentNode = null;
         //    isEditMode = false;
         //}
-        
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             NewWave();
@@ -181,6 +181,8 @@ public class GameManager : MonoBehaviour
             }
 
             enemy.transform.position = enemyInformation._currentNode.model.transform.position;
+            // Rotate enemy to look at the target
+            enemy.transform.rotation = Quaternion.LookRotation(enemyInformation.GetTarget().model.transform.position - enemy.transform.position);
 
 
             targetNode = enemyInformation.GetTarget();
