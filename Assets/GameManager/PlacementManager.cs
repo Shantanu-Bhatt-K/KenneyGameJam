@@ -63,27 +63,16 @@ public class PlacementManager
 
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Debug.Log("Turret");
-            parentNode = null;
-            childNode = null;
-            editStage = EditStage.None;
-            ChangeType(Nodetype.Turret);
+            PlaceTurret();
+
         }
         else if(Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Debug.Log("Branch");
-            parentNode = null;
-            childNode = null;
-            editStage = EditStage.None;
-            ChangeType(Nodetype.Branch);
+            PlaceBranch();
         }
         else if(Input.GetKeyDown(KeyCode.Alpha3))
         {
-            Debug.Log("Farm");
-            parentNode = null;
-            childNode = null;
-            editStage = EditStage.None;
-            ChangeType(Nodetype.Farm);
+            PlaceFarm();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
@@ -120,6 +109,31 @@ public class PlacementManager
         {
             gameManager.StartCoroutine(BuildNode());
         }
+    }
+
+    public void PlaceFarm()
+    {
+        Debug.Log("Farm");
+        parentNode = null;
+        childNode = null;
+        editStage = EditStage.None;
+        ChangeType(Nodetype.Farm);
+    }
+    public void PlaceTurret()
+    {
+        Debug.Log("Turret");
+        parentNode = null;
+        childNode = null;
+        editStage = EditStage.None;
+        ChangeType(Nodetype.Turret);
+    }
+    public void PlaceBranch()
+    {
+        Debug.Log("Branch");
+        parentNode = null;
+        childNode = null;
+        editStage = EditStage.None;
+        ChangeType(Nodetype.Branch);
     }
 
     IEnumerator SelectParent()

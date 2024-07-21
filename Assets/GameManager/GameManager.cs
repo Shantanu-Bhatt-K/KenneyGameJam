@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +20,9 @@ public class GameManager : MonoBehaviour
     // This flag will be toggled every time an enemy chooses a side
     bool branchingFlag = false;
     System.Random rand = new System.Random();
+
+    // UI GameObjects
+    public GameObject _coinNumberUI;
 
     public GameObject _projectilePrefab;
 
@@ -221,6 +227,9 @@ public class GameManager : MonoBehaviour
     {
         gameCoins += coinsPerTick;
         Debug.LogWarning("game Coins=" + gameCoins);
+        // Update coin UI
+        if (_coinNumberUI != null)
+            _coinNumberUI.GetComponent<TextMeshProUGUI>().text = gameCoins.ToString();
     }
     public void AddEntryNode()
     {
@@ -238,5 +247,27 @@ public class GameManager : MonoBehaviour
         projectile.GetComponent<Rigidbody>().velocity = 10 * direction;
         //projectile.GetComponent<Projectile>().SetDestinaion(endingNode.model.transform.position);
         projectile.GetComponent<Projectile>().SetDistance(Vector3.Magnitude(distance));
+    }
+
+    public void PlaceFarm()
+    {
+        if (isEditMode)
+        {
+            placementManager.PlaceFarm();
+        }
+    }
+    public void PlaceTurret()
+    {
+        if (isEditMode)
+        {
+            placementManager.PlaceTurret();
+        }
+    }
+    public void PlaceBranch()
+    {
+        if (isEditMode)
+        {
+            placementManager.PlaceBranch();
+        }
     }
 }
