@@ -32,6 +32,7 @@ public abstract class NodeClass
     public List<NodeClass> children= new List<NodeClass>();
     public List<NodeClass> parents= new List<NodeClass>();
     public Dictionary<NodeClass,LineRenderer> Parent= new Dictionary<NodeClass,LineRenderer>();
+    public Dictionary<NodeClass,GameObject> ParentAttack= new Dictionary<NodeClass,GameObject>();
     public GameManager gameManager;
     public abstract void Init( NodeClass _parent,Vector3 position);
     public abstract void Init(Vector3 position );
@@ -47,6 +48,7 @@ public abstract class NodeClass
             AddParentNode(newParent);
         else
         {
+            
             LineRenderer line = Parent[oldParent];
             Parent.Remove(oldParent);
             parents.Remove(oldParent);
@@ -71,9 +73,14 @@ public abstract class NodeClass
     }
     public virtual void AddChildren(NodeClass child)
     {
+        
         if (children.Count >= data.maxChildren)
         {
             NodeClass oldChild=GameObject.FindAnyObjectByType<GameManager>().placementManager.childNode;
+            if(oldChild==null)
+            {
+                Debug.LogError("Broken");
+            }
             children.Remove(oldChild);
             children.Add(child);
             child.AddChildren(oldChild);
@@ -81,6 +88,7 @@ public abstract class NodeClass
         }
         else
             children.Add(child);
+        
     }
     public virtual void RemoveChildren(NodeClass child)
     {

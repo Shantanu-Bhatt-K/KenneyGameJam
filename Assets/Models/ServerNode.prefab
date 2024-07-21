@@ -210,6 +210,9 @@ MonoBehaviour:
   canvas: {fileID: 4539146836387630318}
   img: {fileID: 91597583359622702}
   bgimg: {fileID: 1623673467721407259}
+  fireFX: {fileID: 0}
+  endPos: {fileID: 0}
+  model: {fileID: 0}
 --- !u!1 &2307084936844388814
 GameObject:
   m_ObjectHideFlags: 0

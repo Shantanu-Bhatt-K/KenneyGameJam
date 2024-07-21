@@ -10,6 +10,7 @@ public class ServerNode :NodeClass
     TextMeshProUGUI text;
     Image img;
     Image bgIMG;
+    
     public override void Init( NodeClass _parent,Vector3 position)
     {
         this.data =new NodeData( Resources.Load<NodeData>("ScriptableObject/Server"));
@@ -34,13 +35,38 @@ public class ServerNode :NodeClass
         throw new System.NotImplementedException();
     }
 
-   
 
+    public override void switchParent(NodeClass oldParent, NodeClass newParent)
+    {
+        if (oldParent == newParent) return;
+        if (!Parent.ContainsKey(oldParent))
+            AddParentNode(newParent);
+        else
+        {
+           
+            LineRenderer line = Parent[oldParent];
+            GameObject temp = ParentAttack[oldParent];
+            ParentAttack.Remove(oldParent);
+            Parent.Remove(oldParent);
+            parents.Remove(oldParent);
+            line.SetPosition(0, newParent.model.transform.position);
+            Parent.Add(newParent, line);
+            parents.Add(newParent);
+
+            temp.transform.GetChild(0).GetChild(3).transform.position = newParent.model.transform.position;
+            ParentAttack.Add(newParent, temp);
+        }
+
+
+    }
     public override void AddParentNode(NodeClass _parent)
     {
         
         _parent.AddChildren(this);
         LineRenderer lineRenderer = GameObject.Instantiate(Resources.Load<GameObject>("Line"), model.transform).GetComponent<LineRenderer>();
+        GameObject temp = GameObject.Instantiate(Resources.Load<GameObject>("Model"),model.transform);
+        temp.transform.GetChild(0).GetChild(3).transform.position=_parent.model.transform.position;
+        ParentAttack.Add(_parent, temp);
         lineRenderer.enabled = true;
         lineRenderer.SetPosition(0, _parent.model.transform.position);
         lineRenderer.SetPosition(1, model.transform.position);
@@ -54,12 +80,22 @@ public class ServerNode :NodeClass
 
     public override void Update()
     {
+        
         if (data.health > 0)
         {
             img.gameObject.SetActive(true);
             bgIMG.gameObject.SetActive(true);
             text.gameObject.SetActive(false);
             img.fillAmount = (float)data.health / (float)maxHealth;
+            
+            foreach(KeyValuePair<NodeClass,GameObject> kvp in ParentAttack)
+            {
+               
+                if(kvp.Key.data.isHacked)
+                {
+                    kvp.Value.SetActive(true);
+                }
+            }
         }
         else
         {

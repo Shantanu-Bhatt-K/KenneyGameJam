@@ -38,6 +38,8 @@ public class TurretNode : NodeClass
         throw new System.NotImplementedException();
     }
 
+    
+
     public override void switchParent(NodeClass oldParent, NodeClass newParent)
     {
         if (oldParent == newParent) return;
@@ -46,12 +48,16 @@ public class TurretNode : NodeClass
         else
         {
             LineRenderer line = Parent[oldParent];
+            
             Parent.Remove(oldParent);
+            parents.Remove(oldParent);
             line.SetPosition(0, newParent.model.transform.position);
-            this.model.transform.rotation = Quaternion.LookRotation(newParent.model.transform.position - this.model.transform.position);
+            graphics.rotation = Quaternion.LookRotation(newParent.model.transform.position - this.model.transform.position);
             Parent.Add(newParent, line);
+            parents.Add(newParent);
 
         }
+
 
     }
 

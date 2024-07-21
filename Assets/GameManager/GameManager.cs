@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
         AddEntryNode();
         serverNode = new ServerNode();
         serverNode.Init(entryNodes[0], Vector3.zero);
+        nodeClasses.Add(serverNode);
         Camera.main.GetComponent<CamController>().SetTarget(serverNode.model.transform);
         placementManager.serverNode = serverNode;
         placementManager.gameManager = this;
