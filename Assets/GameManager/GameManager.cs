@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
         CheckHighScore(0);
         _waveManager.OnNewWave += (object sender, EventArgs e) => { NewWave(); };
         _waveManager.OnNewEntry += (object sender, EventArgs e) => { AddEntryNode(); };
+        _enemyInformationList = new List<GameObject>();
     }
 
     // Update is called once per frame
