@@ -643,7 +643,6 @@ GameObject:
   - component: {fileID: 362734408990169408}
   - component: {fileID: 7959716182587039769}
   - component: {fileID: 6361187712205166932}
-  - component: {fileID: 3819149323009323266}
   m_Layer: 5
   m_Name: Planet
   m_TagString: Untagged
@@ -708,27 +707,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!95 &3819149323009323266
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1189701596899912968}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cc08db4c76581114ea5d02a56ae44337, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1254157213820309410
 GameObject:
   m_ObjectHideFlags: 0
@@ -1672,7 +1650,6 @@ GameObject:
   - component: {fileID: 8817716395355262026}
   - component: {fileID: 6833846597858269231}
   - component: {fileID: 1016193151923947612}
-  - component: {fileID: 5240874856374251826}
   m_Layer: 5
   m_Name: Planet
   m_TagString: Untagged
@@ -1737,27 +1714,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!95 &5240874856374251826
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4805307423245105235}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7dd30d3580c4fa7488e49ef22f2680bb, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5157657398552433982
 GameObject:
   m_ObjectHideFlags: 0
