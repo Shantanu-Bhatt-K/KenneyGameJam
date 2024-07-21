@@ -225,8 +225,6 @@ public class GameManager : MonoBehaviour
 
     void UpdateCoins()
     {
-        gameCoins += coinsPerTick;
-        Debug.LogWarning("game Coins=" + gameCoins);
         // Update coin UI
         if (_coinNumberUI != null)
             _coinNumberUI.GetComponent<TextMeshProUGUI>().text = gameCoins.ToString();
