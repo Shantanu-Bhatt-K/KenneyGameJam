@@ -95,7 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 150
   _value: 30
-  _damagePerHit: 15
+  _damagePerHit: 8
   _hitPerSecond: 1
   _level: 1
   _isActive: 0

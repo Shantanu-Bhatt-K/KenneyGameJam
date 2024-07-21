@@ -13,7 +13,7 @@ public class WaveManager : MonoBehaviour
     private Wave _currentWave;
     private int _numberOfWaves;
     GameObject _waveObject;
-    private int _currentWaveIndex;
+    public int _currentWaveIndex;
     private bool _hasActiveWave;
     // Random number generator to release
     System.Random random;
@@ -74,10 +74,7 @@ public class WaveManager : MonoBehaviour
         _currentWave.Create(_entryPoints, _enemyPrefabs, _startingNumberOfEnemies + _currentWaveIndex * 2, 1700, 3);
         //_currentWave.OnFinish += WaveComplete;
         _currentWaveIndex++;
-        if (_currentWaveIndex % 3 == 0)
-        {
-            OnNewEntry(this, EventArgs.Empty);
-        }
+        
 
     }
     public void SetTimer(float time)

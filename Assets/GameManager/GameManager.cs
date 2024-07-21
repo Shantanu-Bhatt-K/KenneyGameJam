@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         placementManager.gameManager = this;
         CheckHighScore(0);
         _waveManager.OnNewWave += (object sender, EventArgs e) => { NewWave(); };
-        _waveManager.OnNewEntry += (object sender, EventArgs e) => { AddEntryNode(); };
+        //_waveManager.OnNewEntry += (object sender, EventArgs e) => { AddEntryNode(); };
         _enemyInformationList = new List<GameObject>();
     }
 
@@ -250,7 +250,10 @@ public class GameManager : MonoBehaviour
                     _hasActiveWave = false;
                     currentState = GameState.EditState;
 
-                   
+                    if (_waveManager._currentWaveIndex % 2 == 0)
+                    {
+                        AddEntryNode();
+                    }
                     // TODO: add the continue button here
                     // Set the waveManagerTimer
                     currentState = GameState.EditState;
